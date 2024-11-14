@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct RecettaApp: App {
+    @StateObject private var appState = AppState() 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -25,7 +26,7 @@ struct RecettaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            SplashScreenViewUI()
+            SplashScreenViewUI().environmentObject(appState)
         }
         .modelContainer(sharedModelContainer)
     }

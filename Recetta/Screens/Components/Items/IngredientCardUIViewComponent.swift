@@ -1,25 +1,24 @@
 import SwiftUI
 
-struct IngredientCardUIViewComponent: View {
 
-    var ingredient: Ingredient // Assuming Ingredient is your model
-     
+struct IngredientCardUIViewComponent: View {
+    var ingredient: Ingredient
+    
     private var directImageUrl: String {
         ingredient.image
-            .replacingOccurrences(of: "https://drive.google.com/file/d/", with: "https://drive.google.com/uc?export=download&id=")
-            .replacingOccurrences(of: "/view?usp=drive_link", with: "")
+            .replacingOccurrences(of: "file-", with: "https://example.com/images/") // Assuming a base URL for images
     }
-     
+    private let baseURL = "https://a346-102-157-75-86.ngrok-free.app/uploads/"
 
+    
     var body: some View {
         HStack(spacing: 12) {
             // AsyncImage for loading image
-            AsyncImage(url: URL(string: directImageUrl)) { image in
+            AsyncImage(url: URL(string: baseURL + ingredient.image)) { image in
                 image
                     .resizable()
                     .scaledToFill()
                     .frame(width: 70, height: 70)
-                    .clipShape(Circle())
                     .accessibilityLabel("Ingredient Image")
             } placeholder: {
                 Image(systemName: "photo.fill")
@@ -31,17 +30,16 @@ struct IngredientCardUIViewComponent: View {
                     .accessibilityLabel("Placeholder Image")
             }
             .padding(.leading, 12)
-             
+
             VStack(alignment: .leading, spacing: 8) {
-                // Ingredient Name and Quantity
+                // Ingredient Name
                 HStack {
                     Text(ingredient.name)
                         .font(.title3)
                         .fontWeight(.semibold)
                     Spacer()
                 }
-                 
-                 
+
                 // Date formatted as "MM-dd-yyyy"
                 Text(getCurrentDateFormatted())
                     .font(.subheadline)
@@ -49,13 +47,11 @@ struct IngredientCardUIViewComponent: View {
             }
             .padding(.trailing, 16)
         }
-        .frame(maxWidth: .infinity , maxHeight: 120) // Ensure the card takes up the full width
+        .frame(maxWidth: .infinity , maxHeight: 120)
         .padding(.vertical, 8)
-        
         .shadow(radius: 5)
     }
-     
-    // Helper function to get current date in "MM-dd-yyyy" format
+
     private func getCurrentDateFormatted() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
@@ -66,10 +62,10 @@ struct IngredientCardUIViewComponent: View {
 struct IngredientCardUIViewComponent_Previews: PreviewProvider {
     static var previews: some View {
         IngredientCardUIViewComponent(ingredient: Ingredient(
-            id: "1",
+            _id: "1",
             name: "Tomato",
             image: "https://drive.google.com/file/d/1oGH6uL9-pkF4Yt0IJKLNRlFdKoErxe4S/view?usp=drive_link",
-            category: "Vegetable"
+            categorie: "Vegetable"
         ))
         .previewLayout(.sizeThatFits)
     }

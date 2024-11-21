@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RegisterViewUI: View {
     @Environment(\.presentationMode) var presentationMode
+    @StateObject var  userViewModel = UserViewModel()
     @State var user = ""
     @State var pass = ""
     @State var repass = ""
@@ -27,9 +28,9 @@ struct RegisterViewUI: View {
                     Text("Hello").font(.title).fontWeight(.bold)
                     Text("Sign Into Your Account").fontWeight(.bold)
                     
-                    CustomTFComponent(value: $user, isemail: true)
-                    CustomTFComponent(value: $pass, isemail: false)
-                    CustomTFComponent(value: $repass, isemail: false, reenter: true)
+                    CustomTFComponent(value: $userViewModel.username, isemail: true)
+                    CustomTFComponent(value: $userViewModel.email, isemail: true)
+                    CustomTFComponent(value: $userViewModel.password, isemail: false, reenter: true)
                     
                     HStack {
                         Button(action: {
@@ -52,7 +53,7 @@ struct RegisterViewUI: View {
                     }
                     
                     Button(action: {
-                        // Register action
+                        userViewModel.signUp()
                     }) {
                         Text("Register Now")
                             .frame(width: UIScreen.main.bounds.width - 100)
@@ -96,3 +97,4 @@ struct RegisterViewUI: View {
 #Preview {
     RegisterViewUI(show: .constant(true))
 }
+

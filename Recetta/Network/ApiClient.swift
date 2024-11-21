@@ -1,93 +1,62 @@
 import Foundation
 
-final class ApiClient {
-    static let shared = ApiClient() // Singleton instance
-    
-    // private var token: String?
-    
-   
-    
- 
-    
-    // func setToken(_ token: String) {
-    //    self.token = token
-    //}
-    
-    // func clearToken() {
-    //     self.token = nil
-    //  }
-    
-    // private func getDefaultHeaders() -> [String: String] {
-    //    var headers: [String: String] = ["Content-Type": "application/json"]
-    //   if let token = token {
-    //       headers["Authorization"] = "Bearer \(token)"
-    //   }
-    //    return headers
-    //}
-    
+class ApiClient {
+    static let shared = ApiClient()
+    private init() {}
+
+    private let baseURL = "https://a346-102-157-75-86.ngrok-free.app/api"
+    private let defaultHeaders = ["Content-Type": "application/json"]
+
     func request<T: Decodable>(
-        url: URL,
+        endpoint: String,
         method: HttpMethod,
-        headers: [String: String]? = nil,
-        body: Data? = nil,
-        responseType: T.Type,
-        completion: @escaping (Result<T, ApiError>) -> Void
-    ) {
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = method.rawValue
-        urlRequest.httpBody = body
-        
-     /*   let combinedHeaders = getDefaultHeaders().merging(headers ?? [:]) { (_, new) in new }
-        combinedHeaders.forEach { key, value in
-            urlRequest.setValue(value, forHTTPHeaderField: key)
+        body: Encodable? = nil,
+        headers: [String: String] = [:]
+    ) async throws -> T {
+        // Construct the full URL
+        guard let url = URL(string: "\(baseURL)/\(endpoint)") else {
+            throw ApiError.invalidURL
         }
-        */
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            if let error = error {
-                completion(.failure(.other(error)))
-                return
+
+        // Create and configure the request
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.allHTTPHeaderFields = defaultHeaders.merging(headers) { (_, new) in new }
+
+        // Encode the body if provided
+        if let body = body {
+            do {
+                request.httpBody = try JSONEncoder().encode(body)
+            } catch {
+                throw ApiError.encodingError(error)
             }
-            
+        }
+
+        // Execute the network request
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            // Validate the HTTP response
             guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(.invalidResponse))
-                return
+                throw ApiError.unknown
             }
-            
-            switch httpResponse.statusCode {
-            case 200...299: // Successful response
-                if let data = data {
-                    do {
-                        let decodedData = try JSONDecoder().decode(T.self, from: data)
-                        completion(.success(decodedData))
-                    } catch {
-                        completion(.failure(.decodingError))
-                    }
-                } else {
-                    completion(.failure(.invalidResponse))
-                }
-            case 400...499:
-                completion(.failure(.serverError(statusCode: httpResponse.statusCode)))
-            case 500...599:
-                completion(.failure(.serverError(statusCode: httpResponse.statusCode)))
-            default:
-                completion(.failure(.invalidResponse))
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                throw ApiError.serverError(httpResponse.statusCode)
             }
-        }.resume()
-    }
-    
-    func get<T: Decodable>(url: URL, headers: [String: String]? = nil, responseType: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
-        request(url: url, method: .get, headers: headers, responseType: responseType, completion: completion)
-    }
-    
-    func post<T: Decodable>(url: URL, headers: [String: String]? = nil, body: Data?, responseType: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
-        request(url: url, method: .post, headers: headers, body: body, responseType: responseType, completion: completion)
-    }
-    
-    func put<T: Decodable>(url: URL, headers: [String: String]? = nil, body: Data?, responseType: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
-        request(url: url, method: .put, headers: headers, body: body, responseType: responseType, completion: completion)
-    }
-    
-    func delete<T: Decodable>(url: URL, headers: [String: String]? = nil, responseType: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
-        request(url: url, method: .delete, headers: headers, responseType: responseType, completion: completion)
+            print(String(data: data, encoding: .utf8)!)
+
+            // Decode the response data
+            do {
+                return try JSONDecoder().decode(T.self, from: data)
+            } catch {
+                throw ApiError.decodingError
+            }
+        } catch {
+            if let apiError = error as? ApiError {
+                throw apiError // Pass through known ApiErrors
+            }
+            throw ApiError.networkError(error) // Wrap unknown errors
+        }
     }
 }

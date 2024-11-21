@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct LoginScreenViewUI: View {
+    @StateObject var  userViewModel = UserViewModel()
     @State var user = ""
     @State var pass = ""
     @State var show = false
-    @State private var navigateToContentView = false // New state variable for ContentView navigation
+    @State private var navigateToContentView = false
+    @State private var navigateToForgetPasswordView = false
     
     var body: some View {
         NavigationStack {
@@ -26,13 +28,14 @@ struct LoginScreenViewUI: View {
                         Text("Hello").font(.title).fontWeight(.bold)
                         Text("Sign Into Your Account").fontWeight(.bold)
                         
-                        CustomTFComponent(value: self.$user, isemail: true)
-                        CustomTFComponent(value: self.$pass, isemail: false)
+                        CustomTFComponent(value: $userViewModel.email, isemail: true)
+                        CustomTFComponent(value: $userViewModel.password, isemail: false)
                         
                         HStack {
                             Spacer()
                             Button(action: {
                                 // Forgot password action
+                                 self.navigateToForgetPasswordView = true
                             }) {
                                 Text("Forget Password ?")
                                     .foregroundColor(Color.black.opacity(0.3))
@@ -40,7 +43,8 @@ struct LoginScreenViewUI: View {
                         }
                         
                         Button(action: {
-                            self.navigateToContentView = true // Trigger navigation to ContentView
+                            userViewModel.signin()
+                             self.navigateToContentView = true // Trigger navigation to ContentView
                         }) {
                             Text("Login")
                                 .frame(width: UIScreen.main.bounds.width - 100)
@@ -82,6 +86,9 @@ struct LoginScreenViewUI: View {
             .navigationDestination(isPresented: $navigateToContentView) {
                 ContentView().navigationBarBackButtonHidden()
             }
+            .navigationDestination(isPresented: $navigateToForgetPasswordView) {
+                           ForgetPasswordViewUi(show: self.$navigateToForgetPasswordView)
+                       }
         }
     }
 }

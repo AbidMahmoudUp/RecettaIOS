@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA12CEFC721007D312E /* RecipeViewUI.swift */; };
+		5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */; };
 		5C7DFB4A2CD93D1200260978 /* SideBarItemComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */; };
 		5C7DFB4C2CD94CAE00260978 /* tryUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFB4B2CD94CAE00260978 /* tryUI.swift */; };
+		5C88414B2CED116400FAD431 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414A2CED116400FAD431 /* AuthManager.swift */; };
+		5C88414D2CED13F600FAD431 /* AuthDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414C2CED13F600FAD431 /* AuthDataModel.swift */; };
+		5C88414F2CED140800FAD431 /* OTPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414E2CED140800FAD431 /* OTPData.swift */; };
 		5CAAE85A2CD7EAAD00C19DD2 /* RecettaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE8592CD7EAAD00C19DD2 /* RecettaApp.swift */; };
 		5CAAE85C2CD7EAAD00C19DD2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */; };
 		5CAAE85E2CD7EAAD00C19DD2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE85D2CD7EAAD00C19DD2 /* Item.swift */; };
@@ -30,7 +35,6 @@
 		5CB721A62CE4AF6E005F5471 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB721A52CE4AF6E005F5471 /* Inventory.swift */; };
 		5CB721A82CE4AFC5005F5471 /* UserServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB721A72CE4AFC5005F5471 /* UserServiceApi.swift */; };
 		5CB721AA2CE4AFE5005F5471 /* InventoryServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB721A92CE4AFE5005F5471 /* InventoryServiceApi.swift */; };
-		5CB721AC2CE4B011005F5471 /* PlatServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB721AB2CE4B011005F5471 /* PlatServiceApi.swift */; };
 		5CB721AE2CE4B14E005F5471 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB721AD2CE4B14E005F5471 /* UserViewModel.swift */; };
 		5CB791D62CE53B8600A2C9CA /* LoginScreenViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB791D52CE53B8600A2C9CA /* LoginScreenViewUI.swift */; };
 		5CB791D82CE53D7900A2C9CA /* RegisterViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB791D72CE53D7900A2C9CA /* RegisterViewUI.swift */; };
@@ -42,23 +46,30 @@
 		5CB791E62CE54C9300A2C9CA /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB791E52CE54C9300A2C9CA /* OnBoardingViewModel.swift */; };
 		5CB791E92CE54CDA00A2C9CA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB791E82CE54CDA00A2C9CA /* AppState.swift */; };
 		5CB791EC2CE54D6000A2C9CA /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB791EB2CE54D6000A2C9CA /* CustomButton.swift */; };
+		5CBABFCB2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBABFCA2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift */; };
+		5CBABFCD2CE6AC4B0029E79C /* ResetPasswordViewUi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBABFCC2CE6AC4B0029E79C /* ResetPasswordViewUi.swift */; };
 		5CC1911E2CE0B95D00C3DCB4 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC1911D2CE0B95D00C3DCB4 /* User.swift */; };
 		5CDC08092CE0C18700C83287 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08082CE0C18700C83287 /* ApiClient.swift */; };
 		5CDC080D2CE0C1CA00C83287 /* HttpMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC080C2CE0C1CA00C83287 /* HttpMethods.swift */; };
 		5CDC080F2CE0C23B00C83287 /* ApiErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC080E2CE0C23B00C83287 /* ApiErrors.swift */; };
 		5CDC08112CE13BBA00C83287 /* Ingredient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08102CE13BBA00C83287 /* Ingredient.swift */; };
 		5CDC08132CE13BD200C83287 /* IngridientQte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08122CE13BD200C83287 /* IngridientQte.swift */; };
-		5CDC08152CE13BE500C83287 /* Plat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08142CE13BE500C83287 /* Plat.swift */; };
-		5CDC08172CE13C2B00C83287 /* PlatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08162CE13C2B00C83287 /* PlatViewModel.swift */; };
-		5CDC08192CE13CB400C83287 /* PlatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08182CE13CB400C83287 /* PlatListView.swift */; };
-		5CDC081D2CE13D1A00C83287 /* PlatCardUIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC081C2CE13D1A00C83287 /* PlatCardUIViewComponent.swift */; };
+		5CDC08152CE13BE500C83287 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08142CE13BE500C83287 /* Recipe.swift */; };
+		5CDC08172CE13C2B00C83287 /* RecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08162CE13C2B00C83287 /* RecipeViewModel.swift */; };
+		5CDC08192CE13CB400C83287 /* RecipeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08182CE13CB400C83287 /* RecipeListView.swift */; };
+		5CDC081D2CE13D1A00C83287 /* RecipeCardUIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC081C2CE13D1A00C83287 /* RecipeCardUIViewComponent.swift */; };
 		5CDC081F2CE162C900C83287 /* IngredientCardUIViewComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC081E2CE162C900C83287 /* IngredientCardUIViewComponent.swift */; };
 		5CDC08212CE162FE00C83287 /* IngredientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDC08202CE162FE00C83287 /* IngredientViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C149EA12CEFC721007D312E /* RecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewUI.swift; sourceTree = "<group>"; };
+		5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceApi.swift; sourceTree = "<group>"; };
 		5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarItemComponent.swift; sourceTree = "<group>"; };
 		5C7DFB4B2CD94CAE00260978 /* tryUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tryUI.swift; sourceTree = "<group>"; };
+		5C88414A2CED116400FAD431 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		5C88414C2CED13F600FAD431 /* AuthDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataModel.swift; sourceTree = "<group>"; };
+		5C88414E2CED140800FAD431 /* OTPData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPData.swift; sourceTree = "<group>"; };
 		5CAAE8562CD7EAAD00C19DD2 /* Recetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CAAE8592CD7EAAD00C19DD2 /* RecettaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecettaApp.swift; sourceTree = "<group>"; };
 		5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,7 +92,6 @@
 		5CB721A52CE4AF6E005F5471 /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		5CB721A72CE4AFC5005F5471 /* UserServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceApi.swift; sourceTree = "<group>"; };
 		5CB721A92CE4AFE5005F5471 /* InventoryServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryServiceApi.swift; sourceTree = "<group>"; };
-		5CB721AB2CE4B011005F5471 /* PlatServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatServiceApi.swift; sourceTree = "<group>"; };
 		5CB721AD2CE4B14E005F5471 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		5CB791D52CE53B8600A2C9CA /* LoginScreenViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewUI.swift; sourceTree = "<group>"; };
 		5CB791D72CE53D7900A2C9CA /* RegisterViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewUI.swift; sourceTree = "<group>"; };
@@ -93,16 +103,18 @@
 		5CB791E52CE54C9300A2C9CA /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
 		5CB791E82CE54CDA00A2C9CA /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		5CB791EB2CE54D6000A2C9CA /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		5CBABFCA2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetPasswordViewUi.swift; sourceTree = "<group>"; };
+		5CBABFCC2CE6AC4B0029E79C /* ResetPasswordViewUi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewUi.swift; sourceTree = "<group>"; };
 		5CC1911D2CE0B95D00C3DCB4 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5CDC08082CE0C18700C83287 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		5CDC080C2CE0C1CA00C83287 /* HttpMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethods.swift; sourceTree = "<group>"; };
 		5CDC080E2CE0C23B00C83287 /* ApiErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiErrors.swift; sourceTree = "<group>"; };
 		5CDC08102CE13BBA00C83287 /* Ingredient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ingredient.swift; sourceTree = "<group>"; };
 		5CDC08122CE13BD200C83287 /* IngridientQte.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngridientQte.swift; sourceTree = "<group>"; };
-		5CDC08142CE13BE500C83287 /* Plat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plat.swift; sourceTree = "<group>"; };
-		5CDC08162CE13C2B00C83287 /* PlatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatViewModel.swift; sourceTree = "<group>"; };
-		5CDC08182CE13CB400C83287 /* PlatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatListView.swift; sourceTree = "<group>"; };
-		5CDC081C2CE13D1A00C83287 /* PlatCardUIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatCardUIViewComponent.swift; sourceTree = "<group>"; };
+		5CDC08142CE13BE500C83287 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		5CDC08162CE13C2B00C83287 /* RecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewModel.swift; sourceTree = "<group>"; };
+		5CDC08182CE13CB400C83287 /* RecipeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeListView.swift; sourceTree = "<group>"; };
+		5CDC081C2CE13D1A00C83287 /* RecipeCardUIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCardUIViewComponent.swift; sourceTree = "<group>"; };
 		5CDC081E2CE162C900C83287 /* IngredientCardUIViewComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCardUIViewComponent.swift; sourceTree = "<group>"; };
 		5CDC08202CE162FE00C83287 /* IngredientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,7 +151,6 @@
 			children = (
 				5CB791E72CE54CC500A2C9CA /* Helper */,
 				5CB721AF2CE4B18E005F5471 /* Constants */,
-				5CDC080B2CE0C1AE00C83287 /* Enums */,
 				5CDC08072CE0C17300C83287 /* Network */,
 				5CC1911C2CE0B90800C3DCB4 /* ViewModel */,
 				5CC1911B2CE0B8FB00C3DCB4 /* Model */,
@@ -173,6 +184,9 @@
 				5CB7219A2CE3BA2C005F5471 /* SplachScreenViewUI.swift */,
 				5CB791D52CE53B8600A2C9CA /* LoginScreenViewUI.swift */,
 				5CB791D72CE53D7900A2C9CA /* RegisterViewUI.swift */,
+				5CBABFCA2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift */,
+				5CBABFCC2CE6AC4B0029E79C /* ResetPasswordViewUi.swift */,
+				5C149EA12CEFC721007D312E /* RecipeViewUI.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -181,7 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				5CAAE8772CD8284800C19DD2 /* Items */,
-				5CDC08182CE13CB400C83287 /* PlatListView.swift */,
+				5CDC08182CE13CB400C83287 /* RecipeListView.swift */,
 				5CAAE8732CD8043C00C19DD2 /* BottomNavigationBarComponent.swift */,
 				5CAAE8782CD82C6000C19DD2 /* SidebarViewComponent.swift */,
 			);
@@ -194,7 +208,7 @@
 				5CAAE8712CD8029300C19DD2 /* BottomNavigationTabItemComponent.swift */,
 				5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */,
 				5C7DFB4B2CD94CAE00260978 /* tryUI.swift */,
-				5CDC081C2CE13D1A00C83287 /* PlatCardUIViewComponent.swift */,
+				5CDC081C2CE13D1A00C83287 /* RecipeCardUIViewComponent.swift */,
 				5CDC081E2CE162C900C83287 /* IngredientCardUIViewComponent.swift */,
 				5CB791D92CE53E0D00A2C9CA /* CostumTFComponent.swift */,
 				5CB791DB2CE53E5200A2C9CA /* SocialMediaComponent.swift */,
@@ -216,6 +230,7 @@
 		5CB721AF2CE4B18E005F5471 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				5CDC080B2CE0C1AE00C83287 /* Enums */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -244,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				5CB791E82CE54CDA00A2C9CA /* AppState.swift */,
+				5C88414A2CED116400FAD431 /* AuthManager.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -263,8 +279,10 @@
 				5CC1911D2CE0B95D00C3DCB4 /* User.swift */,
 				5CDC08102CE13BBA00C83287 /* Ingredient.swift */,
 				5CDC08122CE13BD200C83287 /* IngridientQte.swift */,
-				5CDC08142CE13BE500C83287 /* Plat.swift */,
+				5CDC08142CE13BE500C83287 /* Recipe.swift */,
 				5CB721A52CE4AF6E005F5471 /* Inventory.swift */,
+				5C88414C2CED13F600FAD431 /* AuthDataModel.swift */,
+				5C88414E2CED140800FAD431 /* OTPData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -272,7 +290,7 @@
 		5CC1911C2CE0B90800C3DCB4 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				5CDC08162CE13C2B00C83287 /* PlatViewModel.swift */,
+				5CDC08162CE13C2B00C83287 /* RecipeViewModel.swift */,
 				5CDC08202CE162FE00C83287 /* IngredientViewModel.swift */,
 				5CB721982CE3B4EF005F5471 /* InventoryViewModel.swift */,
 				5CB721AD2CE4B14E005F5471 /* UserViewModel.swift */,
@@ -286,7 +304,7 @@
 				5CDC08082CE0C18700C83287 /* ApiClient.swift */,
 				5CB721A72CE4AFC5005F5471 /* UserServiceApi.swift */,
 				5CB721A92CE4AFE5005F5471 /* InventoryServiceApi.swift */,
-				5CB721AB2CE4B011005F5471 /* PlatServiceApi.swift */,
+				5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -375,34 +393,39 @@
 				5CDC080F2CE0C23B00C83287 /* ApiErrors.swift in Sources */,
 				5CAAE85C2CD7EAAD00C19DD2 /* ContentView.swift in Sources */,
 				5CB791D62CE53B8600A2C9CA /* LoginScreenViewUI.swift in Sources */,
-				5CDC08172CE13C2B00C83287 /* PlatViewModel.swift in Sources */,
+				5CDC08172CE13C2B00C83287 /* RecipeViewModel.swift in Sources */,
 				5CAAE86A2CD7EE2F00C19DD2 /* HomeViewUI.swift in Sources */,
 				5CB7219B2CE3BA2C005F5471 /* SplachScreenViewUI.swift in Sources */,
 				5CDC081F2CE162C900C83287 /* IngredientCardUIViewComponent.swift in Sources */,
 				5CB791E42CE54C6300A2C9CA /* OnBoardingView.swift in Sources */,
-				5CDC08192CE13CB400C83287 /* PlatListView.swift in Sources */,
+				5CDC08192CE13CB400C83287 /* RecipeListView.swift in Sources */,
 				5CAAE8742CD8043C00C19DD2 /* BottomNavigationBarComponent.swift in Sources */,
 				5C7DFB4C2CD94CAE00260978 /* tryUI.swift in Sources */,
 				5CB791E22CE54BB700A2C9CA /* Image.swift in Sources */,
 				5CB791DA2CE53E0D00A2C9CA /* CostumTFComponent.swift in Sources */,
 				5CDC08212CE162FE00C83287 /* IngredientViewModel.swift in Sources */,
 				5CB791D82CE53D7900A2C9CA /* RegisterViewUI.swift in Sources */,
+				5C88414F2CED140800FAD431 /* OTPData.swift in Sources */,
 				5CB7219E2CE4AEBF005F5471 /* UserRepository.swift in Sources */,
 				5CB791DF2CE54B6D00A2C9CA /* OnBoardingContent.swift in Sources */,
 				5CB721A42CE4AF16005F5471 /* InventoryRepository.swift in Sources */,
+				5CBABFCB2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift in Sources */,
 				5CB721992CE3B4EF005F5471 /* InventoryViewModel.swift in Sources */,
 				5CB791DC2CE53E5200A2C9CA /* SocialMediaComponent.swift in Sources */,
 				5CDC08112CE13BBA00C83287 /* Ingredient.swift in Sources */,
-				5CDC081D2CE13D1A00C83287 /* PlatCardUIViewComponent.swift in Sources */,
-				5CB721AC2CE4B011005F5471 /* PlatServiceApi.swift in Sources */,
+				5CDC081D2CE13D1A00C83287 /* RecipeCardUIViewComponent.swift in Sources */,
+				5C88414B2CED116400FAD431 /* AuthManager.swift in Sources */,
 				5CDC08132CE13BD200C83287 /* IngridientQte.swift in Sources */,
 				5CDC080D2CE0C1CA00C83287 /* HttpMethods.swift in Sources */,
 				5CAAE86C2CD7F01500C19DD2 /* ProfileViewUI.swift in Sources */,
 				5CB791E62CE54C9300A2C9CA /* OnBoardingViewModel.swift in Sources */,
 				5CB791EC2CE54D6000A2C9CA /* CustomButton.swift in Sources */,
 				5CAAE8762CD8280300C19DD2 /* InventoryViewUI.swift in Sources */,
-				5CDC08152CE13BE500C83287 /* Plat.swift in Sources */,
+				5C88414D2CED13F600FAD431 /* AuthDataModel.swift in Sources */,
+				5CDC08152CE13BE500C83287 /* Recipe.swift in Sources */,
 				5CB721A02CE4AED3005F5471 /* PlatRepository.swift in Sources */,
+				5CBABFCD2CE6AC4B0029E79C /* ResetPasswordViewUi.swift in Sources */,
+				5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */,
 				5CDC08092CE0C18700C83287 /* ApiClient.swift in Sources */,
 				5CAAE8722CD8029300C19DD2 /* BottomNavigationTabItemComponent.swift in Sources */,
 				5CB721A82CE4AFC5005F5471 /* UserServiceApi.swift in Sources */,
@@ -412,6 +435,7 @@
 				5C7DFB4A2CD93D1200260978 /* SideBarItemComponent.swift in Sources */,
 				5CB791E92CE54CDA00A2C9CA /* AppState.swift in Sources */,
 				5CAAE86E2CD7F04C00C19DD2 /* FavoriteViewUI.swift in Sources */,
+				5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */,
 				5CB721AA2CE4AFE5005F5471 /* InventoryServiceApi.swift in Sources */,
 				5CB721AE2CE4B14E005F5471 /* UserViewModel.swift in Sources */,
 				5CAAE85A2CD7EAAD00C19DD2 /* RecettaApp.swift in Sources */,

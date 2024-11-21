@@ -16,8 +16,8 @@ class IngrediantViewModel: ObservableObject {
         // Simulate a network call
         await Task.sleep(2 * 1_000_000_000) // Simulate a 2-second delay
         self.ingredients = [
-            Ingredient(id: "1", name: "Tomato",image:"swift", category: "Vegetable"),
-            Ingredient(id: "2", name: "Carrot",image:"swift", category: "Vegetable")
+            Ingredient(_id: "1", name: "Tomato",image:"swift", categorie: "Vegetable"),
+            Ingredient(_id: "2", name: "Carrot",image:"swift", categorie: "Vegetable")
         ]
         self.isLoading = false
     }

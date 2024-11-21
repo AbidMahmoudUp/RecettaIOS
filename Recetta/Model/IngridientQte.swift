@@ -6,8 +6,8 @@
 //
 
 import Foundation
-struct IngridientQte: Identifiable {
-    let id: String
+struct IngredientQte: Codable {
     let ingredient: Ingredient
     let qte: Double
+    let date : String
 }

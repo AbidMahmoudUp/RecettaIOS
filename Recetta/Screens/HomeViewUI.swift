@@ -6,7 +6,7 @@ struct HomeViewUI: View {
     var body: some View {
         ZStack(alignment: .leading) {
             // Main content - List of plats
-            PlatListView().padding(30)
+            RecipeListView().padding(30)
 
             // Sidebar overlay
             SidebarViewComponent(isSidebarVisible: $isSidebarVisible)

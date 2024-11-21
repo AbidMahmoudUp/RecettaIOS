@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+struct Inventory : Codable{
+    
+    let _id: String
+    
+    let user : String
+    
+    let ingredients : [IngredientQte]
+}

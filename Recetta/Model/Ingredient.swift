@@ -6,9 +6,10 @@
 //
 
 import Foundation
-struct Ingredient: Identifiable {
-    let id: String 
+struct Ingredient: Identifiable,Codable {
+    var id: String { return _id }
+    let _id: String
     let name: String
     let image: String
-    let category: String
+    let categorie: String
 }

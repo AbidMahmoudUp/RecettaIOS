@@ -6,19 +6,24 @@
 //
 
 import Foundation
-class IngrediantViewModel: ObservableObject {
+class IngredientViewModel: ObservableObject {
     @Published var ingredients: [Ingredient] = []
     @Published var isLoading: Bool = false
+    @Published var errorMessage: String?
 
+    private let repository: IngredientRepository
+
+    init(repository: IngredientRepository = IngredientRepository()) {
+        self.repository = repository
+    }
     func fetchAllIngredients() async {
-        // Example function to simulate fetching ingredients from a backend or database
-        self.isLoading = true
-        // Simulate a network call
-        await Task.sleep(2 * 1_000_000_000) // Simulate a 2-second delay
-        self.ingredients = [
-            Ingredient(_id: "1", name: "Tomato",image:"swift", categorie: "Vegetable"),
-            Ingredient(_id: "2", name: "Carrot",image:"swift", categorie: "Vegetable")
-        ]
-        self.isLoading = false
+        do {
+            let ingredients: [Ingredient] = try await repository.getingredients()
+            print("Decoded Ingredients: \(ingredients)") // Debug
+            self.ingredients = ingredients
+        } catch {
+            print("Error fetching Ingredients: \(error)")
+            errorMessage = error.localizedDescription
+        }
     }
 }

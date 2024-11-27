@@ -14,10 +14,18 @@ class RecipeRepository {
         self.service = service
     }
 
+    
     func getRecipeByRecipeId(recipeId: String) async throws -> Recipe {
         try await service.fetchRecipeById(recipeId: recipeId)
     }
+    
+    
     func getRecipes() async throws -> [Recipe] {
         try await service.fetchRecipes()
+    }
+    
+    func generateRecipe(request :[String : String]) async throws ->[Recipe]
+    {
+        try await service.generateRecipe(prompt: request)
     }
 }

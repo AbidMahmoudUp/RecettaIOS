@@ -31,14 +31,5 @@ struct Recipe: Codable, Identifiable {
     }
 }
 
-struct IngredientRecipe: Codable {
-    var id: String { ingredient?.id ?? "" }  // To use as the id for ForEach
-    var ingredient: Ingredient?
-    var qte: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case ingredient = "ingredient"
-        case qte = "qte"
-    }
-}
+
 

@@ -19,6 +19,9 @@ class RecipeViewModel: ObservableObject {
         self.repository = repository
     }
     
+    
+    
+    
     func fetchRecipeById(recipeId: String) async {
         do {
             let fetchedRecipe = try await repository.getRecipeByRecipeId(recipeId: recipeId)
@@ -30,6 +33,8 @@ class RecipeViewModel: ObservableObject {
         }
     }
     
+   
+    
     func fetchRecipes() async {
         do {
             let fetchedRecipes = try await repository.getRecipes()
@@ -40,6 +45,12 @@ class RecipeViewModel: ObservableObject {
             self.errorMessage = "Failed to fetch recipes: \(error.localizedDescription)"
         }
     }
+    
+    func generateRecipe(ingredients : Set<IngredientRecipe> )
+    {
+        //TODO
+    }
+    
 }
     
     

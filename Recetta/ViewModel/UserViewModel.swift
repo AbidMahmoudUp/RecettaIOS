@@ -38,7 +38,7 @@ class UserViewModel: ObservableObject {
         let code: String
     }
 
-    private let baseURL = "https://a346-102-157-75-86.ngrok-free.app/api"
+    private let baseURL = "https://080d-102-156-55-70.ngrok-free.app/api"
     func areCredentialsValid() -> Bool {
            return !username.isEmpty && !email.isEmpty && !password.isEmpty
     }

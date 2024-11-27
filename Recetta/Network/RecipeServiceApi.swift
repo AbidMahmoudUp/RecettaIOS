@@ -17,4 +17,8 @@ class RecipeServiceApi {
         try await ApiClient.shared.request(endpoint: "plat", method: .GET)
         
     }
+    
+    func generateRecipe(prompt:[String:String]) async throws -> [Recipe]{
+        try await ApiClient.shared.request(endpoint: "generative-ia", method: .POST)
+    }
 }

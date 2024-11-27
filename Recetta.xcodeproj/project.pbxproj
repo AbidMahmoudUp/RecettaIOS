@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA12CEFC721007D312E /* RecipeViewUI.swift */; };
 		5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */; };
+		5C7906A82CF672BE005CF356 /* AddIngredientViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */; };
+		5C7906AA2CF67DD3005CF356 /* IngredientServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */; };
 		5C7DFB4A2CD93D1200260978 /* SideBarItemComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */; };
 		5C7DFB4C2CD94CAE00260978 /* tryUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFB4B2CD94CAE00260978 /* tryUI.swift */; };
 		5C88414B2CED116400FAD431 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414A2CED116400FAD431 /* AuthManager.swift */; };
@@ -65,6 +67,8 @@
 /* Begin PBXFileReference section */
 		5C149EA12CEFC721007D312E /* RecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewUI.swift; sourceTree = "<group>"; };
 		5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceApi.swift; sourceTree = "<group>"; };
+		5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientViewUI.swift; sourceTree = "<group>"; };
+		5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientServiceApi.swift; sourceTree = "<group>"; };
 		5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarItemComponent.swift; sourceTree = "<group>"; };
 		5C7DFB4B2CD94CAE00260978 /* tryUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tryUI.swift; sourceTree = "<group>"; };
 		5C88414A2CED116400FAD431 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 				5CBABFCA2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift */,
 				5CBABFCC2CE6AC4B0029E79C /* ResetPasswordViewUi.swift */,
 				5C149EA12CEFC721007D312E /* RecipeViewUI.swift */,
+				5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -305,6 +310,7 @@
 				5CB721A72CE4AFC5005F5471 /* UserServiceApi.swift */,
 				5CB721A92CE4AFE5005F5471 /* InventoryServiceApi.swift */,
 				5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */,
+				5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -395,6 +401,7 @@
 				5CB791D62CE53B8600A2C9CA /* LoginScreenViewUI.swift in Sources */,
 				5CDC08172CE13C2B00C83287 /* RecipeViewModel.swift in Sources */,
 				5CAAE86A2CD7EE2F00C19DD2 /* HomeViewUI.swift in Sources */,
+				5C7906A82CF672BE005CF356 /* AddIngredientViewUI.swift in Sources */,
 				5CB7219B2CE3BA2C005F5471 /* SplachScreenViewUI.swift in Sources */,
 				5CDC081F2CE162C900C83287 /* IngredientCardUIViewComponent.swift in Sources */,
 				5CB791E42CE54C6300A2C9CA /* OnBoardingView.swift in Sources */,
@@ -418,6 +425,7 @@
 				5CDC08132CE13BD200C83287 /* IngridientQte.swift in Sources */,
 				5CDC080D2CE0C1CA00C83287 /* HttpMethods.swift in Sources */,
 				5CAAE86C2CD7F01500C19DD2 /* ProfileViewUI.swift in Sources */,
+				5C7906AA2CF67DD3005CF356 /* IngredientServiceApi.swift in Sources */,
 				5CB791E62CE54C9300A2C9CA /* OnBoardingViewModel.swift in Sources */,
 				5CB791EC2CE54D6000A2C9CA /* CustomButton.swift in Sources */,
 				5CAAE8762CD8280300C19DD2 /* InventoryViewUI.swift in Sources */,

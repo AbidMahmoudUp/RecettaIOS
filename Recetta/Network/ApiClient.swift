@@ -4,7 +4,7 @@ class ApiClient {
     static let shared = ApiClient()
     private init() {}
 
-    private let baseURL = "https://a346-102-157-75-86.ngrok-free.app/api"
+    private let baseURL = "https://080d-102-156-55-70.ngrok-free.app/api"
     private let defaultHeaders = ["Content-Type": "application/json"]
 
     func request<T: Decodable>(

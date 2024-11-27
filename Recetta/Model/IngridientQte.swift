@@ -6,8 +6,19 @@
 //
 
 import Foundation
-struct IngredientQte: Codable {
+struct IngredientQte: Codable ,Hashable {
     let ingredient: Ingredient
     let qte: Double
     let date : String
+}
+
+struct IngredientRecipe: Codable ,Hashable {
+    var id: String { ingredient?.id ?? "" }
+    var ingredient: Ingredient?
+    var qte: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case ingredient = "ingredient"
+        case qte = "qte"
+    }
 }

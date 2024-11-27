@@ -83,7 +83,7 @@ struct RecipeCardUIViewComponent: View {
 // Sample Data for Preview
 struct RecipeCardUIViewComponent_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleIngredient = Ingredient(_id: "", name: "Tomato", image: "tomato.png", categorie: "Vegetable")
+        let sampleIngredient = Ingredient(_id: "", name: "Tomato", image: "tomato.png", categorie: "Vegetable",unit: "")
 
         let ingredientQte = IngredientRecipe(ingredient: sampleIngredient, qte: 2)
         RecipeCardUIViewComponent(plat: Recipe(

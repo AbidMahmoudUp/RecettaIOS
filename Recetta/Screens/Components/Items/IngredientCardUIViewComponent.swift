@@ -2,19 +2,19 @@ import SwiftUI
 
 
 struct IngredientCardUIViewComponent: View {
-    var ingredient: Ingredient
+    var ingredient: IngredientQte
     
     private var directImageUrl: String {
-        ingredient.image
+        ingredient.ingredient.image
             .replacingOccurrences(of: "file-", with: "https://example.com/images/") // Assuming a base URL for images
     }
-    private let baseURL = "https://a346-102-157-75-86.ngrok-free.app/uploads/"
+    private let baseURL = "https://080d-102-156-55-70.ngrok-free.app/uploads/"
 
     
     var body: some View {
         HStack(spacing: 12) {
             // AsyncImage for loading image
-            AsyncImage(url: URL(string: baseURL + ingredient.image)) { image in
+            AsyncImage(url: URL(string: baseURL + ingredient.ingredient.image)) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -34,10 +34,11 @@ struct IngredientCardUIViewComponent: View {
             VStack(alignment: .leading, spacing: 8) {
                 // Ingredient Name
                 HStack {
-                    Text(ingredient.name)
+                    Text(ingredient.ingredient.name)
                         .font(.title3)
                         .fontWeight(.semibold)
                     Spacer()
+                    Text(String(ingredient.qte))
                 }
 
                 // Date formatted as "MM-dd-yyyy"
@@ -61,12 +62,24 @@ struct IngredientCardUIViewComponent: View {
 
 struct IngredientCardUIViewComponent_Previews: PreviewProvider {
     static var previews: some View {
-        IngredientCardUIViewComponent(ingredient: Ingredient(
-            _id: "1",
-            name: "Tomato",
-            image: "https://drive.google.com/file/d/1oGH6uL9-pkF4Yt0IJKLNRlFdKoErxe4S/view?usp=drive_link",
-            categorie: "Vegetable"
+        IngredientCardUIViewComponent(ingredient: IngredientQte(
+            ingredient: Ingredient(
+                _id: "1",
+                name: "Tomato",
+                image: "tomato.png",
+                categorie: "Vegetable",
+                unit: "kg"
+            ),
+            qte: 5,  // Now passing qte as a string
+            date: getCurrentDateFormatted()  // Calling getCurrentDateFormatted() directly here
         ))
         .previewLayout(.sizeThatFits)
+    }
+
+    // Move the getCurrentDateFormatted method outside of the main struct to make it accessible in preview
+    static func getCurrentDateFormatted() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        return dateFormatter.string(from: Date())
     }
 }

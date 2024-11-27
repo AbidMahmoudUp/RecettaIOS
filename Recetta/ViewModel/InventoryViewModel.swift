@@ -26,4 +26,21 @@ class InventoryViewModel: ObservableObject {
             errorMessage = error.localizedDescription
         }
     }
+   
+    func updateInventory(userId :String,ingredients: IngredientUpdateDto) async {
+        do{
+            let inventory : Inventory = try await repository.updateInventoryByUserId(userId: userId,ingredients: ingredients)
+            print("Decoded Inventory: \(inventory)")
+            self.inventory = inventory
+            
+        }catch {
+            print("Error fetching inventory: \(error)")
+            errorMessage = error.localizedDescription
+        }
+
+    }
+    
+    func updateInventoryForRequiredRecipe(ingredients : IngredientUpdateDto) {
+        //TODO
+    }
 }

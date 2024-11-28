@@ -18,7 +18,15 @@ class RecipeServiceApi {
         
     }
     
-    func generateRecipe(prompt:[String:String]) async throws -> [Recipe]{
-        try await ApiClient.shared.request(endpoint: "generative-ia", method: .POST)
+    
+    func generateRecipe(request: IngredientUpdateDto) async throws -> [Recipe] {
+ 
+        let response: [Recipe] = try await ApiClient.shared.request(
+              endpoint: "generative-ia",
+              method: .POST,
+              body: request 
+          )
+
+          return response
     }
 }

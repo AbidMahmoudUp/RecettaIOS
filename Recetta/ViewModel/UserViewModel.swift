@@ -15,7 +15,6 @@ class UserViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isLoggedIn: Bool = false
     @Published var isSignedUp: Bool = false
-    @Published var profile: User?
     @Published var OTPCode : String = ""
     @Published var VerifyOTPCode : String = ""
     @Published var newPassword: String = ""
@@ -25,7 +24,10 @@ class UserViewModel: ObservableObject {
     @Published var navigateToChangePassword: Bool = false
     @Published var isEditingUser: Bool = false
     @Published var userIdByOTP: String = ""
-    
+    @Published var profile: User? = nil
+    @Published var profileErrorMessage: String?
+    @Published var profileIsLoading: Bool = false
+
     
     struct AuthDataModel: Codable {
         let accessToken: String
@@ -42,6 +44,179 @@ class UserViewModel: ObservableObject {
     func areCredentialsValid() -> Bool {
            return !username.isEmpty && !email.isEmpty && !password.isEmpty
     }
+    
+    func updateUserProfile(updatedUser: User) {
+        guard let userId = AuthManager.shared.getUserId() else { return }
+        guard let url = URL(string: "\(baseURL)/auth/update-profile") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Construct the body of the request with the updated user profile data
+        let body: [String: Any] = [
+            "userId": userId,
+            "username": updatedUser.username,
+            "email": updatedUser.email
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "Error encoding updated data."
+            }
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Error updating user profile."
+                }
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async {
+                    self?.profile = updatedUser  // Update the local profile data
+                    self?.errorMessage = nil
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Error updating user profile."
+                }
+            }
+        }.resume()
+    }
+    func getUserData() {
+        guard let userId = AuthManager.shared.getUserId() else { return }
+        guard let url = URL(string: "\(baseURL)/auth/GetUser") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // Construct the body of the request with the userId
+        let body: [String: Any] = [
+            "userId": userId
+        ]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            DispatchQueue.main.async {
+                self.profileErrorMessage = "Error encoding request data."
+                self.profileIsLoading = false
+            }
+            return
+        }
+
+        // Start loading
+        DispatchQueue.main.async {
+            self.profileIsLoading = true
+        }
+
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let self = self else { return }
+
+            // Handle network error
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    self.profileErrorMessage = "Error fetching user data."
+                    self.profileIsLoading = false
+                }
+                return
+            }
+
+            // Log response data for debugging
+            if let httpResponse = response as? HTTPURLResponse {
+                print("HTTP Status Code: \(httpResponse.statusCode)")
+    if let responseDataString = String(data: data, encoding: .utf8) {
+                    print("Response Data: \(responseDataString)")
+                }
+            }
+
+            // Check for successful response with status code 200 or 201
+            if let httpResponse = response as? HTTPURLResponse, (httpResponse.statusCode == 200 || httpResponse.statusCode == 201) {
+                do {
+                    // Decode the user data from the response
+                    let userProfile = try JSONDecoder().decode(User.self, from: data)
+
+                    // Ensure required fields (username, email) are set
+                    let profile = User(
+                        username: userProfile.username,
+                        email: userProfile.email, password: userProfile.password ?? "",
+                        age: userProfile.age ?? "", // Set empty string if age is missing
+                        phoneNumber: userProfile.phoneNumber ?? "", // Set empty string if phone is missing
+                        role: userProfile.role ?? "" // Set empty string if role is missing
+                    )
+                    
+                    DispatchQueue.main.async {
+                        self.profile = profile
+                        self.profileIsLoading = false // Stop loading once data is fetched
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.profileErrorMessage = "Error decoding user data: \(error.localizedDescription)"
+                        self.profileIsLoading = false // Stop loading even if there's an error
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.profileErrorMessage = "Error fetching user data. Status code: \((response as? HTTPURLResponse)?.statusCode ?? -1)"
+                    self.profileIsLoading = false // Stop loading
+                }
+            }
+        }.resume()
+    }
+
+
+    
+    
+    func deleteUser() {
+        guard let userId = AuthManager.shared.getUserId() else { return }
+        guard let url = URL(string: "\(baseURL)/auth/DeleteUser") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // Construct the body with the userId to delete
+        let body: [String: Any] = [
+            "userId": userId
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = "Error encoding delete request."
+            }
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let data = data, error == nil else {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Error deleting user."
+                }
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async {
+                    self?.profile = nil  // Clear the local profile data after deletion
+                    self?.errorMessage = nil
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self?.errorMessage = "Error deleting user."
+                }
+            }
+        }.resume()
+    }
+    
     
     func signUp() {
         guard let url = URL(string: "\(baseURL)/auth/signup") else { return }
@@ -61,21 +236,39 @@ class UserViewModel: ObservableObject {
         
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let data = data, error == nil else { return }
-            print(data,response)
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
-                // Utilisateur créé, récupérer les infos de profil
-                DispatchQueue.main.async {
-                    self?.isSignedUp = true
-                   // self?.fetchProfile()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.errorMessage = "Error signing up"
+            print(data, response)
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 201 {
+                    // User created, retrieve profile info
+                    DispatchQueue.main.async {
+                        self?.isSignedUp = true
+                        // self?.fetchProfile() // Uncomment if you want to fetch the profile after signup
+                    }
+                } else if httpResponse.statusCode == 400 {
+                    // Handle 400 Bad Request (likely email already in use)
+                    if let responseData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let message = responseData["message"] as? String {
+                        // Show the error message from the server
+                        DispatchQueue.main.async {
+                            self?.errorMessage = message
+                        }
+                    } else {
+                        // Fallback generic error message if no detailed message is available
+                        DispatchQueue.main.async {
+                            self?.errorMessage = "Invalid data. Please check your input."
+                        }
+                    }
+                } else {
+                    // Handle other status codes
+                    DispatchQueue.main.async {
+                        self?.errorMessage = "Failed to sign up. Please try again."
+                    }
                 }
             }
         }.resume()
     }
-    
+
     func verifyOTP (){
         if OTPCode == "" {
             
@@ -205,6 +398,7 @@ class UserViewModel: ObservableObject {
               
                 DispatchQueue.main.async {
                     self.isLoggedIn = true
+                    
                   //  self?.fetchProfile()
                 }
             } else {

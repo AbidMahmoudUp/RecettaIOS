@@ -24,8 +24,8 @@ class RecipeRepository {
         try await service.fetchRecipes()
     }
     
-    func generateRecipe(request :[String : String]) async throws ->[Recipe]
+    func generateRecipe(request: IngredientUpdateDto) async throws ->[Recipe]
     {
-        try await service.generateRecipe(prompt: request)
+        try await service.generateRecipe(request: request)
     }
 }

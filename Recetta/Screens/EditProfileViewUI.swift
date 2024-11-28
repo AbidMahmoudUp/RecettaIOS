@@ -1,9 +1,23 @@
+//
+//  EditProfileViewUI.swift
+//  Recetta
+//
+//  Created by wicked on 28.11.24.
+//
+
+import Foundation
 import SwiftUI
-struct ProfileViewUI: View {
+
+struct EditProfileViewUI: View {
     @StateObject var userViewModel = UserViewModel()
+    @State private var emailTfShow = false
+    @State private var editState = false
+    @State private var phoneNumberTfShow = false
+    @State private var passwordValue = ""
+    @State private var passwordTfShow = false
     @State private var navigateToLoginView = false
-    @State private var navigateToEditProfileView = false
-    @State private var usernameValue : String = "name"
+    @State private var emailValue = ""
+    @State private var phoneNumberValue = ""
 
     var body: some View {
         NavigationStack {
@@ -19,7 +33,7 @@ struct ProfileViewUI: View {
                     .frame(height: 200)
                     .edgesIgnoringSafeArea(.top)
 
-                    // Profile Image
+                    //Profile Image
                     VStack {
                         Image(ImageResource.profilePicExample)
                             .renderingMode(.original)
@@ -37,77 +51,57 @@ struct ProfileViewUI: View {
                 }
 
                 // User Name and Edit Button
-                
-                // Show loading or user data
-                if userViewModel.profileIsLoading {
-                    Text("Loading...")
-                        .font(.system(size: 24))
-                        .foregroundColor(.gray)
-                        .padding()
-                } else if let userProfile = userViewModel.profile {
-                    userNameView(userProfile: userProfile)
-                    Text("Edit")
-                       .font(.system(size: 20, weight: .bold))
-                       .foregroundColor(.cyan)
-                       .onTapGesture {
-                           navigateToEditProfileView.toggle()
-                       }
-                       .padding(5)
+                HStack {
+                    Text("User Name")
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundColor(.black)
+                        .padding(5)
 
-                    userDetailsView(userProfile: userProfile)
-                } else if let errorMessage = userViewModel.profileErrorMessage {
-                    Text(errorMessage)
-                        .font(.system(size: 18))
-                        .foregroundColor(.red)
-                        .padding()
+                    
+                        Image(systemName: "square.and.pencil")
+                    
                 }
+
+               
+
+                // User Details Section
+             
+                    editableDetailsView()
+                
             }
             .navigationDestination(isPresented: $navigateToLoginView) {
                 LoginScreenViewUI().navigationBarBackButtonHidden()
             }
-            .navigationDestination(isPresented: $navigateToEditProfileView) {
-                EditProfileViewUI().navigationBarBackButtonHidden()
-            }
-            .onAppear {
-                userViewModel.getUserData() // Fetch user data when the view appears
-            }
-            
         }
     }
-    private func userNameView(userProfile: User) -> some View {
-        HStack {
-            Text(userProfile.username)
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundColor(.black)
-                .padding(5)
-        }
 
-        
-    }
 
-    private func userDetailsView(userProfile: User) -> some View {
-        
+    private func editableDetailsView() -> some View {
         VStack(spacing: 30) {
-            // Replace hardcoded values with actual user data
-            detailRow(icon: "envelope", title: "Email", value: userProfile.email)
-            detailRow(icon: "iphone.gen2", title: "Mobile number", value: userProfile.phoneNumber ?? "Not Provided")
-            detailRow(icon: "person.badge.key", title: "Role", value: userProfile.role ?? "Not Assigned")
+            editableRow(icon: "envelope", title: "Email", value: $emailValue, show: $emailTfShow)
+            editableRow(icon: "iphone.gen2", title: "Mobile number", value: $phoneNumberValue, show: $phoneNumberTfShow)
 
-            Button(action: {
-                // Sign-out logic
-                UserDefaults.standard.set(false, forKey: "remember")
-                navigateToLoginView = true
-            }) {
-                Text("Sign out")
-                    .frame(width: UIScreen.main.bounds.width - 200)
-                    .padding(.vertical, 15)
-                    .foregroundColor(.white)
+            VStack {
+                HStack {
+                    Image(systemName: "person.badge.key").foregroundStyle(Color.cyan)
+                    Text("Password")
+                        .font(.system(size: 24, weight: .semibold))
+                        .onTapGesture {
+                            passwordTfShow.toggle()
+                        }
+                        .foregroundColor(.black)
+                        .padding(.trailing, 100)
+                }
+
+                if passwordTfShow {
+                    SecureField("Old Password", text: $passwordValue)
+                        .frame(width: 200, height: 40)
+                    SecureField("New Password", text: $passwordValue)
+                        .frame(width: 200, height: 40)
+                }
             }
-            .background(Color("Color1"))
-            .clipShape(Capsule())
-            .padding(.top, 20)
         }
-        .padding(50)
+        .padding(35)
         .background(Color.white)
         .cornerRadius(20)
         .shadow(radius: 7)
@@ -145,4 +139,8 @@ struct ProfileViewUI: View {
             }
         }
     }
+}
+
+#Preview {
+    ProfileViewUI()
 }

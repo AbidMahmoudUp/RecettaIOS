@@ -1,66 +1,78 @@
-//
-//  CostumTFComponent.swift
-//  Recetta
-//
-//  Created by wicked on 13.11.24.
-//
-
 import SwiftUI
 
 struct CustomTFComponent: View {
-    @Binding var value : String
-    var isemail = false
-    var reenter = false
-    var isValidationCode = false
-    var isConfirmPassword = false
-    var body : some View{
-        
-        VStack(spacing: 8){
-            
+    @Binding var value: String
+    var isemail: Bool = false
+    var isUserName: Bool = false
+    var reenter: Bool = false
+    var isValidationCode: Bool = false
+    var isConfirmPassword: Bool = false
+    @State private var isPasswordVisible = false // State for password visibility toggle
+
+    var body: some View {
+        VStack(spacing: 8) {
+            // Field Label
             HStack {
-                Text(self.isemail ? "Email ID" : self.reenter ? "Re-Enter" : isValidationCode ? "Validation Code" : isConfirmPassword ? "Confirm Password" : "Password")
-                               .foregroundColor(Color.black.opacity(0.3))
-                           Spacer()
-                       }
-            
-            
-            
-            HStack{
-                
-                if self.isemail{
-                    
-                    TextField("", text: self.$value)
+                Text(fieldLabel)
+                    .foregroundColor(Color.black.opacity(0.3))
+                Spacer()
+            }
+
+            HStack {
+                // Dynamic TextField/SecureField based on field type
+                if isemail || isUserName {
+                    TextField("", text: $value)
+                        .keyboardType(isemail ? .emailAddress : .default)
+                        .autocapitalization(.none)
+                } else if isValidationCode {
+                    TextField("", text: $value)
+                        .keyboardType(.numberPad)
+                        .onChange(of: value) { newValue in
+                            let filtered = newValue.filter { $0.isNumber }
+                            if filtered.count > 6 {
+                                value = String(filtered.prefix(6))
+                            } else {
+                                value = filtered
+                            }
+                        }
+                } else {
+                    Group {
+                        if isPasswordVisible {
+                            TextField("", text: $value) // TextField for visible password
+                        } else {
+                            SecureField("", text: $value) // SecureField for hidden password
+                        }
+                    }
                 }
-                else if isValidationCode {
-                                    TextField("", text: self.$value)
-                                        .keyboardType(.numberPad)
-                                        .onChange(of: value){ newValue in
-                                            // Restrict input to 6 digits and numbers only
-                                            let filtered = newValue.filter { $0.isNumber }
-                                            if filtered.count > 6 {
-                                                value = String(filtered.prefix(6))
-                                            } else {
-                                                value = filtered
-                                            }
-                                        }
-                                }
-                else if isConfirmPassword || reenter {
-                                    SecureField("", text: self.$value)
-                                } else {
-                                    SecureField("", text: self.$value)
-                                }
-                
-                
-                Button(action: {
-                    
-                }) {
-                    
-                    Image(systemName: self.isemail ? "envelope.fill" : "eye.slash.fill").foregroundColor(Color("Color1"))
+
+                // Trailing Icon/Button
+                if isemail {
+                    Image(systemName: "envelope.fill")
+                        .foregroundColor(Color("Color1"))
+                } else if isUserName {
+                    Image(systemName: "person.fill")
+                        .foregroundColor(Color("Color1"))
+                } else if !isemail && !isUserName && !isValidationCode {
+                    Button(action: {
+                        isPasswordVisible.toggle()
+                    }) {
+                        Image(systemName: isPasswordVisible ? "eye.fill" : "eye.slash.fill")
+                            .foregroundColor(Color("Color1"))
+                    }
                 }
             }
-            
+
             Divider()
         }
     }
-}
 
+    // Dynamic field label based on type
+    private var fieldLabel: String {
+        if isemail { return "Email ID" }
+        if isUserName { return "Username" }
+        if reenter { return "Re-Enter Password" }
+        if isValidationCode { return "Validation Code" }
+        if isConfirmPassword { return "Confirm Password" }
+        return "Password"
+    }
+}

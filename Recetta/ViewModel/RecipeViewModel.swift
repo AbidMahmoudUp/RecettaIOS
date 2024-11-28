@@ -12,7 +12,9 @@ class RecipeViewModel: ObservableObject {
     @Published var recipe: Recipe?
     @Published var recipesList: [Recipe] = []
     @Published var errorMessage: String?
-    
+    @Published var generatedRecipes: [Recipe] = []
+    @Published var isLoading: Bool = false
+
     private let repository: RecipeRepository
     
     init(repository: RecipeRepository = RecipeRepository()) {
@@ -45,10 +47,34 @@ class RecipeViewModel: ObservableObject {
             self.errorMessage = "Failed to fetch recipes: \(error.localizedDescription)"
         }
     }
-    
-    func generateRecipe(ingredients : Set<IngredientRecipe> )
-    {
-        //TODO
+    func generateRecipe(ingredients: Set<IngredientRecipe>) async {
+        // Update UI state on main thread
+        DispatchQueue.main.async {
+            self.isLoading = true
+        }
+        defer {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+        }
+
+        // Prepare the request data
+        let dto = IngredientUpdateDto(ingredients: ingredients)
+        do {
+            // Make the API call
+            let recipes = try await repository.generateRecipe(request: dto)
+
+            // Make sure UI updates happen on the main thread
+            DispatchQueue.main.async {
+                self.generatedRecipes = recipes
+            }
+        } catch {
+            // Handle errors and ensure UI is updated on main thread
+            DispatchQueue.main.async {
+                self.generatedRecipes = []
+            }
+            print("Error generating recipes: \(error.localizedDescription)")
+        }
     }
     
 }

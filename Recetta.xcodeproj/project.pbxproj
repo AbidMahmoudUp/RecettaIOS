@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA12CEFC721007D312E /* RecipeViewUI.swift */; };
 		5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */; };
+		5C55D6102CF8E419006F7912 /* ToastViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */; };
+		5C55D6122CF8EDB6006F7912 /* GenerateRecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */; };
 		5C7906A82CF672BE005CF356 /* AddIngredientViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */; };
 		5C7906AA2CF67DD3005CF356 /* IngredientServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */; };
 		5C7DFB4A2CD93D1200260978 /* SideBarItemComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */; };
@@ -16,6 +18,7 @@
 		5C88414B2CED116400FAD431 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414A2CED116400FAD431 /* AuthManager.swift */; };
 		5C88414D2CED13F600FAD431 /* AuthDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414C2CED13F600FAD431 /* AuthDataModel.swift */; };
 		5C88414F2CED140800FAD431 /* OTPData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C88414E2CED140800FAD431 /* OTPData.swift */; };
+		5CA34D3A2CF916EC00BB7C44 /* EditProfileViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CA34D392CF916EC00BB7C44 /* EditProfileViewUI.swift */; };
 		5CAAE85A2CD7EAAD00C19DD2 /* RecettaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE8592CD7EAAD00C19DD2 /* RecettaApp.swift */; };
 		5CAAE85C2CD7EAAD00C19DD2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */; };
 		5CAAE85E2CD7EAAD00C19DD2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE85D2CD7EAAD00C19DD2 /* Item.swift */; };
@@ -67,6 +70,8 @@
 /* Begin PBXFileReference section */
 		5C149EA12CEFC721007D312E /* RecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewUI.swift; sourceTree = "<group>"; };
 		5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceApi.swift; sourceTree = "<group>"; };
+		5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewUI.swift; sourceTree = "<group>"; };
+		5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeViewUI.swift; sourceTree = "<group>"; };
 		5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientViewUI.swift; sourceTree = "<group>"; };
 		5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientServiceApi.swift; sourceTree = "<group>"; };
 		5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarItemComponent.swift; sourceTree = "<group>"; };
@@ -74,6 +79,7 @@
 		5C88414A2CED116400FAD431 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		5C88414C2CED13F600FAD431 /* AuthDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataModel.swift; sourceTree = "<group>"; };
 		5C88414E2CED140800FAD431 /* OTPData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPData.swift; sourceTree = "<group>"; };
+		5CA34D392CF916EC00BB7C44 /* EditProfileViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewUI.swift; sourceTree = "<group>"; };
 		5CAAE8562CD7EAAD00C19DD2 /* Recetta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recetta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CAAE8592CD7EAAD00C19DD2 /* RecettaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecettaApp.swift; sourceTree = "<group>"; };
 		5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -192,6 +198,8 @@
 				5CBABFCC2CE6AC4B0029E79C /* ResetPasswordViewUi.swift */,
 				5C149EA12CEFC721007D312E /* RecipeViewUI.swift */,
 				5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */,
+				5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */,
+				5CA34D392CF916EC00BB7C44 /* EditProfileViewUI.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -203,6 +211,7 @@
 				5CDC08182CE13CB400C83287 /* RecipeListView.swift */,
 				5CAAE8732CD8043C00C19DD2 /* BottomNavigationBarComponent.swift */,
 				5CAAE8782CD82C6000C19DD2 /* SidebarViewComponent.swift */,
+				5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -404,6 +413,7 @@
 				5C7906A82CF672BE005CF356 /* AddIngredientViewUI.swift in Sources */,
 				5CB7219B2CE3BA2C005F5471 /* SplachScreenViewUI.swift in Sources */,
 				5CDC081F2CE162C900C83287 /* IngredientCardUIViewComponent.swift in Sources */,
+				5CA34D3A2CF916EC00BB7C44 /* EditProfileViewUI.swift in Sources */,
 				5CB791E42CE54C6300A2C9CA /* OnBoardingView.swift in Sources */,
 				5CDC08192CE13CB400C83287 /* RecipeListView.swift in Sources */,
 				5CAAE8742CD8043C00C19DD2 /* BottomNavigationBarComponent.swift in Sources */,
@@ -424,6 +434,7 @@
 				5C88414B2CED116400FAD431 /* AuthManager.swift in Sources */,
 				5CDC08132CE13BD200C83287 /* IngridientQte.swift in Sources */,
 				5CDC080D2CE0C1CA00C83287 /* HttpMethods.swift in Sources */,
+				5C55D6122CF8EDB6006F7912 /* GenerateRecipeViewUI.swift in Sources */,
 				5CAAE86C2CD7F01500C19DD2 /* ProfileViewUI.swift in Sources */,
 				5C7906AA2CF67DD3005CF356 /* IngredientServiceApi.swift in Sources */,
 				5CB791E62CE54C9300A2C9CA /* OnBoardingViewModel.swift in Sources */,
@@ -434,6 +445,7 @@
 				5CB721A02CE4AED3005F5471 /* PlatRepository.swift in Sources */,
 				5CBABFCD2CE6AC4B0029E79C /* ResetPasswordViewUi.swift in Sources */,
 				5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */,
+				5C55D6102CF8E419006F7912 /* ToastViewUI.swift in Sources */,
 				5CDC08092CE0C18700C83287 /* ApiClient.swift in Sources */,
 				5CAAE8722CD8029300C19DD2 /* BottomNavigationTabItemComponent.swift in Sources */,
 				5CB721A82CE4AFC5005F5471 /* UserServiceApi.swift in Sources */,

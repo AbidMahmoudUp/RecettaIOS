@@ -1,16 +1,15 @@
 import SwiftUI
+
 struct ProfileViewUI: View {
     @StateObject var userViewModel = UserViewModel()
     @State private var navigateToLoginView = false
     @State private var navigateToEditProfileView = false
-    @State private var usernameValue : String = "name"
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 8) {
                 // Header Section
                 ZStack {
-                    // Background gradient
                     LinearGradient(
                         gradient: Gradient(colors: [Color.yellow, Color.orange]),
                         startPoint: .topTrailing,
@@ -35,17 +34,10 @@ struct ProfileViewUI: View {
                             .padding(.top, 50)
                     }
                 }
-
-                // User Name and Edit Button
                 
-                // Show loading or user data
-                if userViewModel.profileIsLoading {
-                    Text("Loading...")
-                        .font(.system(size: 24))
-                        .foregroundColor(.gray)
-                        .padding()
-                } else if let userProfile = userViewModel.profile {
-                    userNameView(userProfile: userProfile)
+                // User Name and Edit Button
+                if let userProfile = userViewModel.profile {
+                    userNameView(username: userProfile.name)
                     Text("Edit")
                        .font(.system(size: 20, weight: .bold))
                        .foregroundColor(.cyan)
@@ -53,6 +45,19 @@ struct ProfileViewUI: View {
                            navigateToEditProfileView.toggle()
                        }
                        .padding(5)
+                    
+                    Text("Delete Account")
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundColor(.red)
+                        .onTapGesture {
+                            userViewModel.deleteUser()
+                            UserDefaults.standard.set(false, forKey: "remember")
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                self.navigateToLoginView = true
+                                
+                            }
+                            
+                        }.padding(5)
 
                     userDetailsView(userProfile: userProfile)
                 } else if let errorMessage = userViewModel.profileErrorMessage {
@@ -60,6 +65,13 @@ struct ProfileViewUI: View {
                         .font(.system(size: 18))
                         .foregroundColor(.red)
                         .padding()
+                } else {
+                    // Loading state
+                    if userViewModel.profileIsLoading {
+                        ProgressView("Loading...")
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .padding()
+                    }
                 }
             }
             .navigationDestination(isPresented: $navigateToLoginView) {
@@ -69,29 +81,25 @@ struct ProfileViewUI: View {
                 EditProfileViewUI().navigationBarBackButtonHidden()
             }
             .onAppear {
-                userViewModel.getUserData() // Fetch user data when the view appears
+                userViewModel.getUserData()
             }
-            
         }
     }
-    private func userNameView(userProfile: User) -> some View {
+
+    private func userNameView(username: String) -> some View {
         HStack {
-            Text(userProfile.username)
+            Text(username)
                 .font(.system(size: 24, weight: .semibold))
                 .foregroundColor(.black)
                 .padding(5)
         }
-
-        
     }
 
     private func userDetailsView(userProfile: User) -> some View {
-        
         VStack(spacing: 30) {
-            // Replace hardcoded values with actual user data
             detailRow(icon: "envelope", title: "Email", value: userProfile.email)
-            detailRow(icon: "iphone.gen2", title: "Mobile number", value: userProfile.phoneNumber ?? "Not Provided")
-            detailRow(icon: "person.badge.key", title: "Role", value: userProfile.role ?? "Not Assigned")
+            detailRow(icon: "iphone.gen2", title: "Mobile number", value: userProfile.phone ?? "Not Provided")
+            detailRow(icon: "person.badge.key", title: "Age", value: userProfile.age ?? "Not Assigned")
 
             Button(action: {
                 // Sign-out logic
@@ -124,25 +132,6 @@ struct ProfileViewUI: View {
             Text(value)
                 .font(.system(size: 18))
                 .foregroundColor(.black)
-        }
-    }
-
-    private func editableRow(icon: String, title: String, value: Binding<String>, show: Binding<Bool>) -> some View {
-        VStack {
-            HStack {
-                Image(systemName: icon).foregroundStyle(Color.cyan)
-                Text(title)
-                    .font(.system(size: 24, weight: .semibold))
-                    .onTapGesture {
-                        show.wrappedValue.toggle()
-                    }
-                    .foregroundColor(.black)
-            }
-            if show.wrappedValue {
-                TextField(title, text: value)
-                    .frame(width: 200, height: 40)
-                    .textFieldStyle(.roundedBorder)
-            }
         }
     }
 }

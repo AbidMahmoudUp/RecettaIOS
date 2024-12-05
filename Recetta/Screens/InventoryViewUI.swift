@@ -7,18 +7,12 @@ struct InventoryViewUI: View {
     // State variable to manage navigation
     @State private var navigateToAddIngredient = false
     @State private var initialIngredientUpdateDto = IngredientUpdateDto(ingredients: [])
+
     var body: some View {
         NavigationStack {  // Wrap the entire view with a NavigationStack
             VStack(spacing: 0) {
                 // Top bar with navigation and title
                 HStack {
-                    Button(action: {
-                        // Navigate back action
-                    }) {
-                        Image(systemName: "arrow.left.circle.fill")
-                            .foregroundColor(Color.blue)
-                            .font(.title)
-                    }
                     Text("Food Manager")
                         .font(.headline)
                         .padding(.leading, 8)
@@ -57,12 +51,18 @@ struct InventoryViewUI: View {
                 // Display inventory or empty state
                 if let inventory = inventoryViewModel.inventory {
                     VStack {
-                        // Iterate over the array of ingredients
+                        // Pull-to-refresh feature
                         ScrollView {
-                            ForEach(inventory.ingredients, id: \.ingredient.id) { ingredientQte in
-                                IngredientCardUIViewComponent(ingredient: ingredientQte)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
+                            VStack {
+                                ForEach(inventory.ingredients, id: \.ingredient.id) { ingredientQte in
+                                    IngredientCardUIViewComponent(ingredient: ingredientQte)
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                }
+                            }
+                            .refreshable {
+                                // Trigger the refresh action
+                                await refreshInventory()
                             }
                         }
                     }
@@ -86,6 +86,16 @@ struct InventoryViewUI: View {
                         await inventoryViewModel.fetchInventory(userId: userId)
                     }
                 }
+            }
+        }
+    }
+
+    // Refresh action
+    private func refreshInventory() async {
+        Task{
+            if let userId = AuthManager.shared.getUserId() {
+                // Update the inventory
+                await inventoryViewModel.fetchInventory(userId: userId)
             }
         }
     }

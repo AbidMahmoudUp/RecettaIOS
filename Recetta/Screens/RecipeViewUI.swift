@@ -6,15 +6,18 @@
 //
 
 import SwiftUI
-
+import CoreData
 struct RecipeViewUI: View {
+    
     @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var inventoryViewModel : InventoryViewModel
      var recipeId: String
 
-     init(recipeId: String, viewModel: RecipeViewModel = RecipeViewModel()) {
-         self.recipeId = recipeId
-         self.viewModel = viewModel
-     }
+    init(recipeId: String, viewModel: RecipeViewModel = RecipeViewModel(), inventoryViewModel: InventoryViewModel = InventoryViewModel()) {
+        self.recipeId = recipeId
+        self.viewModel = viewModel
+        self.inventoryViewModel = inventoryViewModel
+    }
 
      var body: some View {
          VStack {
@@ -22,7 +25,7 @@ struct RecipeViewUI: View {
                  ScrollView {
                      VStack {
                          ParallaxToolbar(recipe: recipe)
-                         ContentRecipeView(recipe: recipe)
+                         ContentRecipeView(recipe: recipe, viewModel: inventoryViewModel)
                      }
                  }
              } else if let errorMessage = viewModel.errorMessage {
@@ -41,76 +44,158 @@ struct RecipeViewUI: View {
                  await viewModel.fetchRecipeById(recipeId: recipeId)
              }
          }
-         .padding(.bottom, 80)
      }
  }
+
 
  // ParallaxToolbar Subview
- struct ParallaxToolbar: View {
-     var recipe: Recipe
+struct ParallaxToolbar: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    @State private var userId: String =  (AuthManager.shared.getUserId() ?? "")
+    @State private var isLiked: Bool = false
 
-     var body: some View {
-         ZStack(alignment: .bottom) {
-             AsyncImage(url: URL(string: recipe.image ?? "defaultImage")) { image in
-                 image.resizable()
-                     .aspectRatio(contentMode: .fill)
-             } placeholder: {
-                 Color.gray
-             }
-             .frame(height: 300)
-             .clipped()
+    var recipe: Recipe
 
-             LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.5), Color.clear]),
-                            startPoint: .bottom,
-                            endPoint: .top)
-                 .frame(height: 300)
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            AsyncImage(url: URL(string: recipe.image ?? "defaultImage")) { image in
+                image.resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Color.gray
+            }
+            .frame(height: 300)
+            .clipped()
 
-             HStack {
-                 Button(action: {
-                     // Action for back button
-                 }) {
-                     Image(systemName: "chevron.left")
-                         .foregroundColor(.white)
-                         .padding()
-                         .background(Color.black.opacity(0.7))
-                         .clipShape(Circle())
-                 }
-                 Spacer()
-                 Text(recipe.title)
-                     .font(.headline)
-                     .foregroundColor(.white)
-                 Spacer()
-                 Button(action: {
-                     // Action for favorite
-                 }) {
-                     Image(systemName: "heart")
-                         .foregroundColor(.white)
-                         .padding()
-                         .background(Color.black.opacity(0.7))
-                         .clipShape(Circle())
-                 }
-             }
-             .padding()
-         }
-     }
- }
+            LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.5), Color.clear]),
+                           startPoint: .bottom,
+                           endPoint: .top)
+                .frame(height: 300)
 
-   struct ContentRecipeView: View {
-       var recipe: Recipe
+            HStack {
+                Button(action: {
+                    // Action for back button
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(Circle())
+                }
+                Spacer()
+                Text(recipe.title)
+                    .font(.headline)
+                    .foregroundColor(.white)
+                Spacer()
+                Button(action: {
+                    toggleLikeStatus()
+                }) {
+                    Image(systemName: isLiked ? "heart.fill" : "heart")
+                        .foregroundColor(isLiked ? .red : .white)
+                        .padding()
+                        .background(Color.black.opacity(0.7))
+                        .clipShape(Circle())
+                }
+            }
+            .padding()
+        }
+        .onAppear {
+            checkIfLiked()
+        }
+    }
 
-       var body: some View {
-           VStack(alignment: .leading) {
-               BasicInfo(recipe: recipe)
-               Description(recipe: recipe)
-               ServingCalculator()
-               IngredientsHeader()
-               IngredientsList(ingredients: recipe.ingredients)
-               ShoppingListButton()
-               Reviews(recipe: recipe)
-               Images()
-           }
-       }
-   }
+    /// Check if the recipe is already in Core Data
+    private func checkIfLiked() {
+        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", recipe.id ?? "")
+
+        do {
+            let count = try viewContext.count(for: fetchRequest)
+            isLiked = count > 0
+        } catch {
+            print("Failed to check recipe: \(error.localizedDescription)")
+            isLiked = false
+        }
+    }
+
+    /// Toggle the like status
+    private func toggleLikeStatus() {
+        if isLiked {
+            removeFromFavorites()
+        } else {
+            addToFavorites()
+        }
+    }
+
+    /// Add the recipe to Core Data
+    private func addToFavorites() {
+        let newRecipe = RecipeEntity(context: viewContext)
+        newRecipe.id = recipe.id
+        newRecipe.title = recipe.title
+        newRecipe.descriptionRecipe = recipe.description
+        newRecipe.category = recipe.category
+        newRecipe.cookingtime = recipe.cookingTime
+        newRecipe.energy = recipe.energy
+        newRecipe.rating = recipe.rating
+        newRecipe.image = recipe.image
+        newRecipe.userId = userId
+
+        do {
+            try viewContext.save()
+            isLiked = true
+            print("Recipe saved to Core Data")
+        } catch {
+            print("Failed to save recipe: \(error.localizedDescription)")
+        }
+    }
+
+    /// Remove the recipe from Core Data
+    private func removeFromFavorites() {
+        let fetchRequest: NSFetchRequest<RecipeEntity> = RecipeEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", recipe.id ?? "")
+
+        do {
+            let recipes = try viewContext.fetch(fetchRequest)
+            for recipeEntity in recipes {
+                viewContext.delete(recipeEntity)
+            }
+            try viewContext.save()
+            isLiked = false
+            print("Recipe removed from Core Data")
+        } catch {
+            print("Failed to remove recipe: \(error.localizedDescription)")
+        }
+    }
+}
+
+
+
+struct ContentRecipeView: View {
+    var recipe: Recipe
+    @ObservedObject var viewModel: InventoryViewModel // Bind to your ViewModel
+    @State private var userId: String = (AuthManager.shared.getUserId() ?? "")
+
+    var body: some View {
+        // Create the ingredientSet here
+        let ingredientSet: Set<IngredientRecipe> = Set(recipe.ingredients.map { ingredientRecipe in
+            IngredientRecipe(ingredient: ingredientRecipe.ingredient, qte: ingredientRecipe.qte)
+        })
+
+        VStack(alignment: .leading) {
+            BasicInfo(recipe: recipe)
+            Description(recipe: recipe)
+            ServingCalculator()
+            IngredientsHeader()
+            IngredientsList(ingredients: recipe.ingredients)
+            ShoppingListButton(viewModel: viewModel,
+                               userId: userId,
+                               ingredients: IngredientUpdateDto(ingredients: ingredientSet))
+            Reviews(recipe: recipe)
+           // Images()
+        }
+    }
+}
+
 
    struct BasicInfo: View {
        var recipe: Recipe
@@ -185,7 +270,6 @@ struct RecipeViewUI: View {
        var body: some View {
            HStack {
                TabButton(text: "Ingredients", active: true)
-               TabButton(text: "Tools", active: false)
                TabButton(text: "Steps", active: false)
            }
            .padding()
@@ -242,18 +326,52 @@ struct IngredientsList: View {
        }
    }
 
-   struct ShoppingListButton: View {
-       var body: some View {
-           Button(action: {}) {
-               Text("Add to shopping list")
-                   .padding()
-                   .frame(maxWidth: .infinity)
-                   .background(Color.gray.opacity(0.2))
-                   .cornerRadius(8)
-           }
-           .padding()
-       }
-   }
+struct ShoppingListButton: View {
+    @ObservedObject var viewModel: InventoryViewModel
+    var userId: String
+    var ingredients: IngredientUpdateDto
+    @State private var showDialog: Bool = false
+    @State private var errorMessage: String? = nil
+    
+    var body: some View {
+        VStack {
+            Button(action: {
+                // Call the updateInventoryForRequiredRecipe function when the button is clicked
+                viewModel.updateInventoryForRequiredRecipe(userId: userId, ingredients: ingredients)
+            }) {
+                Text("Start Cooking")
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
+            }
+            .padding()
+        }
+        // Use onChange to reactively handle changes in errorMessage
+        .onChange(of: viewModel.errorMessage) { newErrorMessage in
+            if let newErrorMessage = newErrorMessage {
+                // Update local state when the error message changes
+                self.errorMessage = newErrorMessage
+                self.showDialog = true
+            }
+        }
+        // Display the Alert when errorMessage is not empty
+        .alert(isPresented: $showDialog) {
+            Alert(
+                title: Text("Oops"),
+                message: Text(errorMessage ?? "An unknown error occurred"),
+                dismissButton: .default(Text("OK")) {
+                    // Clear the error message when the dialog is dismissed
+                    viewModel.clearErrorMessage()
+                }
+            )
+        }
+    }
+}
+
+
+
+
 
    struct Reviews: View {
        var recipe: Recipe
@@ -274,21 +392,29 @@ struct IngredientsList: View {
        }
    }
 
-   struct Images: View {
-       var body: some View {
-           HStack(spacing: 16) {
-               Image("strawberry_pie_2")
-                   .resizable()
-                   .frame(width: 100, height: 100)
-                   .clipShape(RoundedRectangle(cornerRadius: 10))
-               Image("strawberry_pie_3")
-                   .resizable()
-                   .frame(width: 100, height: 100)
-                   .clipShape(RoundedRectangle(cornerRadius: 10))
-           }
-           .padding()
-       }
-}
+
+
+
+
+
+
+
+
+ //  struct Images: View {
+ //      var body: some View {
+ //          HStack(spacing: 16) {
+ //              Image("strawberry_pie_2")
+ //                  .resizable()
+ //                  .frame(width: 100, height: 100)
+ //                  .clipShape(RoundedRectangle(cornerRadius: 10))
+ //              Image("strawberry_pie_3")
+ //                  .resizable()
+ //                  .frame(width: 100, height: 100)
+ //                  .clipShape(RoundedRectangle(cornerRadius: 10))
+ //          }
+ //          .padding()
+ //      }
+    //}
 
 #Preview {
     RecipeViewUI(recipeId: "1")

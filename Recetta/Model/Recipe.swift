@@ -8,16 +8,17 @@
 import Foundation
 
 struct Recipe: Codable, Identifiable {
-    let id: String
-    let title: String  // Map from "title" in JSON to "name" in your model
+    let id: String?
+    let title: String
     let description: String
     let category: String
     let cookingTime: String
     let energy: String
-    let rating: String  // Rating is a string in the JSON, you can convert it to Double if needed
-    let image: String? // Handle image in case it's not always present
+    let rating: String
+    let image: String?
     let ingredients: [IngredientRecipe]
-    
+    let instructions: [String]?
+
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case title = "title"
@@ -28,6 +29,7 @@ struct Recipe: Codable, Identifiable {
         case rating = "rating"
         case image = "image"
         case ingredients = "ingredients"
+        case instructions = "instructions"
     }
 }
 

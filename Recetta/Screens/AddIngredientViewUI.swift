@@ -1,5 +1,6 @@
 import SwiftUI
 
+
 struct AddIngredientViewUI: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var inventoryViewModel: InventoryViewModel
@@ -10,86 +11,91 @@ struct AddIngredientViewUI: View {
     @State private var listIngredientQte: IngredientUpdateDto
 
     private let categories = ["All", "Fruit", "Vegetables", "Meat", "Nuts"]
+    
     init(inventoryViewModel: InventoryViewModel, ingredientViewModel: IngredientViewModel, listIngredientQte: IngredientUpdateDto) {
-           self.inventoryViewModel = inventoryViewModel
-           self.ingredientViewModel = ingredientViewModel
-           self._listIngredientQte = State(initialValue: listIngredientQte)
-       }
+        self.inventoryViewModel = inventoryViewModel
+        self.ingredientViewModel = ingredientViewModel
+        self._listIngredientQte = State(initialValue: listIngredientQte)
+    }
+    
     var body: some View {
-        VStack {
-            // Navigation Bar
-            HStack {
-                Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                    Image(systemName: "arrow.left")
-                        .foregroundColor(Color.blue)
-                }
-                Text("Add Ingredient")
-                    .font(.headline)
-                    .padding(.leading, 8)
-                Spacer()
-                // Dynamically show Save button
-                if !listIngredientQte.ingredients.isEmpty {
-                    Button(action: {
-                        Task {
-                            await inventoryViewModel.updateInventory(
-                                userId: AuthManager.shared.getUserId() ?? "",
-                                ingredients: listIngredientQte
-                            )
-                            // Optionally dismiss the view after saving
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }) {
-                        Text("Save")
-                            .foregroundColor(.blue)
+        NavigationView {
+            VStack {
+                // Navigation Bar with custom back button
+                HStack {
+                    Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                        Image(systemName: "arrow.left")
+                            .foregroundColor(Color.blue)
                     }
-                }
-            }
-            .padding()
-
-            // Search Bar
-            TextField("Search", text: $searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
-
-            // Categories
-            Text("Categories")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(categories, id: \.self) { category in
-                        CategoryTab(text: category, isSelected: selectedCategory == category) {
-                            selectedCategory = category
+                    Text("Add Ingredient")
+                        .font(.headline)
+                        .padding(.leading, 8)
+                    Spacer()
+                    // Dynamically show Save button
+                    if !listIngredientQte.ingredients.isEmpty {
+                        Button(action: {
+                            Task {
+                                await inventoryViewModel.updateInventory(
+                                    userId: AuthManager.shared.getUserId() ?? "",
+                                    ingredients: listIngredientQte
+                                )
+                                // Optionally dismiss the view after saving
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }) {
+                            Text("Save")
+                                .foregroundColor(.blue)
                         }
-                    }
-                }
-                .padding(.horizontal)
-            }
-
-            // Filtered Ingredients (Display all by default)
-            let filteredIngredients = ingredientViewModel.ingredients.filter {
-                searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText)
-            }
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                    ForEach(filteredIngredients, id: \.id) { ingredient in
-                        FoodCard(
-                            ingredient: ingredient,
-                            listOfIngredients: $listIngredientQte.ingredients
-                        )
                     }
                 }
                 .padding()
-            }
+                .navigationBarBackButtonHidden(true) // Hide default back button
 
-            Spacer()
-        }
-        .onAppear {
-            // Fetch ingredients when the view appears
-            Task {
-                await ingredientViewModel.fetchAllIngredients()
+                // Search Bar
+                TextField("Search", text: $searchText)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+
+                // Categories
+                Text("Categories")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(categories, id: \.self) { category in
+                            CategoryTab(text: category, isSelected: selectedCategory == category) {
+                                selectedCategory = category
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+
+                // Filtered Ingredients (Display all by default)
+                let filteredIngredients = ingredientViewModel.ingredients.filter {
+                    searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText)
+                }
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                        ForEach(filteredIngredients, id: \.id) { ingredient in
+                            FoodCard(
+                                ingredient: ingredient,
+                                listOfIngredients: $listIngredientQte.ingredients
+                            )
+                        }
+                    }
+                    .padding()
+                }
+
+                Spacer()
+            }
+            .onAppear {
+                // Fetch ingredients when the view appears
+                Task {
+                    await ingredientViewModel.fetchAllIngredients()
+                }
             }
         }
     }
@@ -120,16 +126,13 @@ struct FoodCard: View {
         
     var body: some View {
         ZStack {
-            // Background with rounded corners and shadow
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.white) // White background
                 .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 4) // Elevation effect
                 .padding(8) // Padding around the background
 
-            // Parent VStack
             VStack {
-                // Ingredient Image
-                AsyncImage(url: URL(string: "https://080d-102-156-55-70.ngrok-free.app/uploads/\(ingredient.image)")) { image in
+                AsyncImage(url: URL(string: "https://fdd2-197-22-195-235.ngrok-free.app/uploads/\(ingredient.image)")) { image in
                     image.resizable()
                         .scaledToFill()
                         .frame(width: 80, height: 80)
@@ -285,9 +288,9 @@ struct CardView<Content: View>: View {
 
     // Add some sample ingredients
     mockIngredientViewModel.ingredients = [
-        Ingredient(_id: "1", name: "Apple", image: "Fruit", categorie: "apple.png", unit: ""),
-        Ingredient(_id: "2", name: "Carrot", image: "Vegetables", categorie: "carrot.png",unit: ""),
-        Ingredient(_id: "3", name: "Chicken", image: "Meat", categorie: "chicken.png",unit: "")
+        Ingredient(name: "1", unit: "Apple", image: "Fruit", categorie: "apple.png", id: ""),
+        Ingredient(name: "2", unit: "Carrot", image: "Vegetables", categorie: "carrot.png",id: ""),
+        Ingredient(name: "3", unit: "Chicken", image: "Meat", categorie: "chicken.png",id: "")
     ]
     let initialIngredientUpdateDto = IngredientUpdateDto(ingredients: [])
 

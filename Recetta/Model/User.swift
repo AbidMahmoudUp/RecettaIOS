@@ -1,26 +1,27 @@
-//
-//  User.swift
-//  Recetta
-//
-//  Created by wicked on 10.11.24.
-//
-
-import Foundation
-
 struct User: Codable {
-    let username: String
-    let email: String
-    let password : String?
-    let age: String?
-    let phoneNumber: String?
-    let role: String?
-
+    
+    var name: String
+    var email: String
+    var phone: String?
+    var age: String? // age is handled as a String
+    
     enum CodingKeys: String, CodingKey {
-        case username
-        case email
-        case age
-        case phoneNumber = "phone"
-        case role
-        case password
+        case name, email, phone, age
+    }
+    
+    // Custom initializer to handle decoding of the age field
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.name = try container.decode(String.self, forKey: .name)
+        self.email = try container.decode(String.self, forKey: .email)
+        self.phone = try container.decodeIfPresent(String.self, forKey: .phone)
+        
+        // Handle age field decoding
+        if let ageNumber = try? container.decode(Int.self, forKey: .age) {
+            self.age = String(ageNumber) // Convert Int to String
+        } else {
+            self.age = try container.decode(String.self, forKey: .age) // If it's already a String, decode it directly
+        }
     }
 }

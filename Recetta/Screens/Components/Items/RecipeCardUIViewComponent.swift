@@ -7,7 +7,7 @@ struct RecipeCardUIViewComponent: View {
         // Debugging: Print the recipe details
 
         
-        NavigationLink(destination: RecipeViewUI(recipeId: plat.id)) {
+        NavigationLink(destination: RecipeViewUI(recipeId: plat.id ?? "")) {
             ZStack(alignment: .topTrailing) {
                 VStack(alignment: .leading, spacing: 16) {
                     Spacer(minLength: 0) // Push content down to center vertically
@@ -83,7 +83,7 @@ struct RecipeCardUIViewComponent: View {
 // Sample Data for Preview
 struct RecipeCardUIViewComponent_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleIngredient = Ingredient(_id: "", name: "Tomato", image: "tomato.png", categorie: "Vegetable",unit: "")
+        let sampleIngredient = Ingredient(name: "", unit: "Tomato", image: "tomato.png", categorie: "Vegetable",id: "")
 
         let ingredientQte = IngredientRecipe(ingredient: sampleIngredient, qte: 2)
         RecipeCardUIViewComponent(plat: Recipe(
@@ -95,7 +95,8 @@ struct RecipeCardUIViewComponent_Previews: PreviewProvider {
             rating: "4",
             image: "swift",
             
-            ingredients: [ingredientQte]
+            ingredients: [ingredientQte],
+            instructions: [""]
         ))
         .previewLayout(.sizeThatFits)
     }

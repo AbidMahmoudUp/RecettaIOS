@@ -7,12 +7,19 @@
 
 import Foundation
 struct Ingredient: Identifiable,Codable,Hashable{
-    var id: String { return _id }
-    let _id: String
     let name: String
-    let image: String
-    let categorie: String
-    let unit : String
+       let unit: String
+       let image: String
+       let categorie: String
+       let id: String?
+       
+       enum CodingKeys: String, CodingKey {
+           case name
+           case unit
+           case image
+           case categorie
+           case id = "_id"  // Map _id to id
+       }
 }
 
 struct IngredientUpdateDto:Codable , Hashable{

@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA12CEFC721007D312E /* RecipeViewUI.swift */; };
 		5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */; };
+		5C44A6922D02523F0026F9A0 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C44A6912D02523F0026F9A0 /* PersistenceController.swift */; };
+		5C44A6952D02525C0026F9A0 /* Recetta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5C44A6932D02525C0026F9A0 /* Recetta.xcdatamodeld */; };
+		5C44A6982D0255C70026F9A0 /* RecipeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C44A6972D0255C70026F9A0 /* RecipeEntity.swift */; };
+		5C4C8EAD2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C8EAC2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift */; };
 		5C55D6102CF8E419006F7912 /* ToastViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */; };
 		5C55D6122CF8EDB6006F7912 /* GenerateRecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */; };
 		5C7906A82CF672BE005CF356 /* AddIngredientViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */; };
@@ -70,6 +74,10 @@
 /* Begin PBXFileReference section */
 		5C149EA12CEFC721007D312E /* RecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewUI.swift; sourceTree = "<group>"; };
 		5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceApi.swift; sourceTree = "<group>"; };
+		5C44A6912D02523F0026F9A0 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		5C44A6942D02525C0026F9A0 /* Recetta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Recetta.xcdatamodel; sourceTree = "<group>"; };
+		5C44A6972D0255C70026F9A0 /* RecipeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEntity.swift; sourceTree = "<group>"; };
+		5C4C8EAC2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGenerationLoadingViewUI.swift; sourceTree = "<group>"; };
 		5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewUI.swift; sourceTree = "<group>"; };
 		5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeViewUI.swift; sourceTree = "<group>"; };
 		5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientViewUI.swift; sourceTree = "<group>"; };
@@ -140,6 +148,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C44A6962D0253080026F9A0 /* LocalData */ = {
+			isa = PBXGroup;
+			children = (
+				5C44A6972D0255C70026F9A0 /* RecipeEntity.swift */,
+			);
+			path = LocalData;
+			sourceTree = "<group>";
+		};
 		5CAAE84D2CD7EAAD00C19DD2 = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +175,7 @@
 		5CAAE8582CD7EAAD00C19DD2 /* Recetta */ = {
 			isa = PBXGroup;
 			children = (
+				5C44A6962D0253080026F9A0 /* LocalData */,
 				5CB791E72CE54CC500A2C9CA /* Helper */,
 				5CB721AF2CE4B18E005F5471 /* Constants */,
 				5CDC08072CE0C17300C83287 /* Network */,
@@ -166,6 +183,7 @@
 				5CC1911B2CE0B8FB00C3DCB4 /* Model */,
 				5CAAE8592CD7EAAD00C19DD2 /* RecettaApp.swift */,
 				5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */,
+				5C44A6932D02525C0026F9A0 /* Recetta.xcdatamodeld */,
 				5CAAE85D2CD7EAAD00C19DD2 /* Item.swift */,
 				5CAAE85F2CD7EAAE00C19DD2 /* Assets.xcassets */,
 				5CAAE8612CD7EAAE00C19DD2 /* Preview Content */,
@@ -200,6 +218,7 @@
 				5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */,
 				5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */,
 				5CA34D392CF916EC00BB7C44 /* EditProfileViewUI.swift */,
+				5C4C8EAC2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -274,6 +293,7 @@
 			children = (
 				5CB791E82CE54CDA00A2C9CA /* AppState.swift */,
 				5C88414A2CED116400FAD431 /* AuthManager.swift */,
+				5C44A6912D02523F0026F9A0 /* PersistenceController.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -418,6 +438,7 @@
 				5CDC08192CE13CB400C83287 /* RecipeListView.swift in Sources */,
 				5CAAE8742CD8043C00C19DD2 /* BottomNavigationBarComponent.swift in Sources */,
 				5C7DFB4C2CD94CAE00260978 /* tryUI.swift in Sources */,
+				5C4C8EAD2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift in Sources */,
 				5CB791E22CE54BB700A2C9CA /* Image.swift in Sources */,
 				5CB791DA2CE53E0D00A2C9CA /* CostumTFComponent.swift in Sources */,
 				5CDC08212CE162FE00C83287 /* IngredientViewModel.swift in Sources */,
@@ -437,6 +458,7 @@
 				5C55D6122CF8EDB6006F7912 /* GenerateRecipeViewUI.swift in Sources */,
 				5CAAE86C2CD7F01500C19DD2 /* ProfileViewUI.swift in Sources */,
 				5C7906AA2CF67DD3005CF356 /* IngredientServiceApi.swift in Sources */,
+				5C44A6922D02523F0026F9A0 /* PersistenceController.swift in Sources */,
 				5CB791E62CE54C9300A2C9CA /* OnBoardingViewModel.swift in Sources */,
 				5CB791EC2CE54D6000A2C9CA /* CustomButton.swift in Sources */,
 				5CAAE8762CD8280300C19DD2 /* InventoryViewUI.swift in Sources */,
@@ -455,9 +477,11 @@
 				5C7DFB4A2CD93D1200260978 /* SideBarItemComponent.swift in Sources */,
 				5CB791E92CE54CDA00A2C9CA /* AppState.swift in Sources */,
 				5CAAE86E2CD7F04C00C19DD2 /* FavoriteViewUI.swift in Sources */,
+				5C44A6952D02525C0026F9A0 /* Recetta.xcdatamodeld in Sources */,
 				5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */,
 				5CB721AA2CE4AFE5005F5471 /* InventoryServiceApi.swift in Sources */,
 				5CB721AE2CE4B14E005F5471 /* UserViewModel.swift in Sources */,
+				5C44A6982D0255C70026F9A0 /* RecipeEntity.swift in Sources */,
 				5CAAE85A2CD7EAAD00C19DD2 /* RecettaApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -662,6 +686,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5C44A6932D02525C0026F9A0 /* Recetta.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5C44A6942D02525C0026F9A0 /* Recetta.xcdatamodel */,
+			);
+			currentVersion = 5C44A6942D02525C0026F9A0 /* Recetta.xcdatamodel */;
+			name = Recetta.xcdatamodeld;
+			path = "/Users/wicked/Desktop/DAM IOS/Recetta/Recetta/Recetta.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5CAAE84E2CD7EAAD00C19DD2 /* Project object */;
 }

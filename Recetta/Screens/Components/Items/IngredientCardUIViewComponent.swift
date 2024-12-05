@@ -8,7 +8,7 @@ struct IngredientCardUIViewComponent: View {
         ingredient.ingredient.image
             .replacingOccurrences(of: "file-", with: "https://example.com/images/") // Assuming a base URL for images
     }
-    private let baseURL = "https://080d-102-156-55-70.ngrok-free.app/uploads/"
+    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/uploads/"
 
     
     var body: some View {
@@ -64,11 +64,11 @@ struct IngredientCardUIViewComponent_Previews: PreviewProvider {
     static var previews: some View {
         IngredientCardUIViewComponent(ingredient: IngredientQte(
             ingredient: Ingredient(
-                _id: "1",
-                name: "Tomato",
+                name: "1",
+                unit: "Tomato",
                 image: "tomato.png",
                 categorie: "Vegetable",
-                unit: "kg"
+                id: "kg"
             ),
             qte: 5,  // Now passing qte as a string
             date: getCurrentDateFormatted()  // Calling getCurrentDateFormatted() directly here

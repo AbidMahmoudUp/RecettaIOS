@@ -4,7 +4,7 @@ class ApiClient {
     static let shared = ApiClient()
     private init() {}
 
-    private let baseURL = "https://080d-102-156-55-70.ngrok-free.app/api"
+    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/api"
     private let defaultHeaders = ["Content-Type": "application/json"]
 
     func request<T: Decodable>(
@@ -44,18 +44,36 @@ class ApiClient {
             guard (200...299).contains(httpResponse.statusCode) else {
                 throw ApiError.serverError(httpResponse.statusCode)
             }
-            print(String(data: data, encoding: .utf8)!)
 
-            // Decode the response data
+            // Print raw JSON data for debugging
+            print("Raw JSON response: \(String(data: data, encoding: .utf8) ?? "Invalid JSON")")
+
+            // Decode the response data with detailed error handling
             do {
                 return try JSONDecoder().decode(T.self, from: data)
+            } catch DecodingError.keyNotFound(let key, let context) {
+                print("Key '\(key.stringValue)' not found: \(context.debugDescription)")
+                print("CodingPath: \(context.codingPath)")
+                throw ApiError.decodingError // Adjusted to handle specific decoding error
+            } catch DecodingError.typeMismatch(let type, let context) {
+                print("Type mismatch for type \(type): \(context.debugDescription)")
+                print("CodingPath: \(context.codingPath)")
+                throw ApiError.decodingError
+            } catch DecodingError.valueNotFound(let value, let context) {
+                print("Value not found: \(value), context: \(context.debugDescription)")
+                print("CodingPath: \(context.codingPath)")
+                throw ApiError.decodingError
+            } catch DecodingError.dataCorrupted(let context) {
+                print("Data corrupted: \(context.debugDescription)")
+                print("CodingPath: \(context.codingPath)")
+                throw ApiError.decodingError
             } catch {
+                print("General decoding error: \(error.localizedDescription)")
                 throw ApiError.decodingError
             }
+        } catch let error as ApiError {
+            throw error // Pass through known ApiErrors
         } catch {
-            if let apiError = error as? ApiError {
-                throw apiError // Pass through known ApiErrors
-            }
             throw ApiError.networkError(error) // Wrap unknown errors
         }
     }

@@ -7,24 +7,15 @@ struct HomeViewUI: View {
     @State private var navigateToGenerateRecipe: Bool = false // Trigger navigation
     
     var body: some View {
-        NavigationStack {
+        NavigationStack { // Ensure we are inside a NavigationStack for navigation
             ZStack {
                 // Main content - RecipeListView
                 VStack {
                     // Top bar with drawer and fork icons
                     HStack {
                         // Drawer icon on the left
-                        Button(action: {
-                            isSidebarVisible.toggle() // Action to toggle the sidebar
-                        }) {
-                            Image(systemName: "line.horizontal.3")
-                                .resizable()
-                                .frame(width: 30, height: 20)
-                                .padding()
-                                .font(.title)
-                                .foregroundColor(.black)
-                        }
-                        
+                        Text("Recetta").font(.title).fontWeight(.bold)
+                            
                         Spacer() // Pushes the fork icon to the far right
                         
                         // Knife and fork icons with animation
@@ -51,7 +42,7 @@ struct HomeViewUI: View {
                             }
                         }
                         .padding()
-                    }
+                    }.padding()
                     
                     // Main content - Recipe list
                     RecipeListView()
@@ -60,15 +51,17 @@ struct HomeViewUI: View {
                     Spacer()
                 }
                 
-               
-            }
-            // Navigation link to GenerateRecipeViewUI
-            .navigationDestination(isPresented: $navigateToGenerateRecipe) {
-                GenerateRecipeViewUI(
-                    recipeViewModel: RecipeViewModel(),
-                    ingredientViewModel: IngredientViewModel(),
-                    listIngredientQte: IngredientUpdateDto(ingredients: [])
-                ).navigationBarBackButtonHidden()
+                // Use NavigationLink to navigate to GenerateRecipeViewUI
+                NavigationLink(
+                    destination: GenerateRecipeViewUI(
+                        recipeViewModel: RecipeViewModel(),
+                        ingredientViewModel: IngredientViewModel(),
+                        listIngredientQte: IngredientUpdateDto(ingredients: [])
+                    ).navigationBarBackButtonHidden(),
+                  isActive: $navigateToGenerateRecipe
+                )   {
+                    EmptyView() // Empty view will be triggered by the navigation link
+                }
             }
         }
     }

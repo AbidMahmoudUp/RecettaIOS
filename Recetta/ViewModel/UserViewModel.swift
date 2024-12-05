@@ -24,9 +24,10 @@ class UserViewModel: ObservableObject {
     @Published var navigateToChangePassword: Bool = false
     @Published var isEditingUser: Bool = false
     @Published var userIdByOTP: String = ""
-    @Published var profile: User? = nil
+    @Published var profile: User?
+    @Published var profileData: User?
+    @Published var profileIsLoading = false
     @Published var profileErrorMessage: String?
-    @Published var profileIsLoading: Bool = false
 
     
     struct AuthDataModel: Codable {
@@ -40,55 +41,82 @@ class UserViewModel: ObservableObject {
         let code: String
     }
 
-    private let baseURL = "https://080d-102-156-55-70.ngrok-free.app/api"
+
+    
+    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/api"
     func areCredentialsValid() -> Bool {
            return !username.isEmpty && !email.isEmpty && !password.isEmpty
     }
     
-    func updateUserProfile(updatedUser: User) {
+    func updateUserProfile(updatedUser: User?) {
         guard let userId = AuthManager.shared.getUserId() else { return }
         guard let url = URL(string: "\(baseURL)/auth/update-profile") else { return }
         
+        // Construct the request body
+        var body: [String: Any] = ["userId": userId]
+        
+        
+        body["name"] = updatedUser?.name
+            body["email"] = updatedUser?.email
+            body["phone"] = updatedUser?.phone
+            body["age"] = updatedUser?.age
+    
+
+        // Create the request
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        // Construct the body of the request with the updated user profile data
-        let body: [String: Any] = [
-            "userId": userId,
-            "username": updatedUser.username,
-            "email": updatedUser.email
-        ]
         
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: body)
         } catch {
             DispatchQueue.main.async {
-                self.errorMessage = "Error encoding updated data."
+                self.errorMessage = "Failed to encode data."
             }
             return
         }
-        
+
+        // Start the network request
+        profileIsLoading = true
+
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
-            guard let data = data, error == nil else {
+            DispatchQueue.main.async {
+                self?.profileIsLoading = false
+            }
+            guard let self = self else { return }
+            
+            if let error = error {
                 DispatchQueue.main.async {
-                    self?.errorMessage = "Error updating user profile."
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
                 }
                 return
             }
             
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                DispatchQueue.main.async {
-                    self?.profile = updatedUser  // Update the local profile data
-                    self?.errorMessage = nil
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self?.errorMessage = "Error updating user profile."
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                case 200:
+                    DispatchQueue.main.async {
+                        self.profile = updatedUser
+                        self.errorMessage = nil
+                    }
+                case 400:
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Bad request. Please verify your input."
+                    }
+                case 404:
+                    DispatchQueue.main.async {
+                        self.errorMessage = "User not found."
+                    }
+                default:
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Unexpected server error."
+                    }
                 }
             }
         }.resume()
     }
+
+
     func getUserData() {
         guard let userId = AuthManager.shared.getUserId() else { return }
         guard let url = URL(string: "\(baseURL)/auth/GetUser") else { return }
@@ -132,7 +160,7 @@ class UserViewModel: ObservableObject {
             // Log response data for debugging
             if let httpResponse = response as? HTTPURLResponse {
                 print("HTTP Status Code: \(httpResponse.statusCode)")
-    if let responseDataString = String(data: data, encoding: .utf8) {
+                if let responseDataString = String(data: data, encoding: .utf8) {
                     print("Response Data: \(responseDataString)")
                 }
             }
@@ -142,18 +170,10 @@ class UserViewModel: ObservableObject {
                 do {
                     // Decode the user data from the response
                     let userProfile = try JSONDecoder().decode(User.self, from: data)
-
-                    // Ensure required fields (username, email) are set
-                    let profile = User(
-                        username: userProfile.username,
-                        email: userProfile.email, password: userProfile.password ?? "",
-                        age: userProfile.age ?? "", // Set empty string if age is missing
-                        phoneNumber: userProfile.phoneNumber ?? "", // Set empty string if phone is missing
-                        role: userProfile.role ?? "" // Set empty string if role is missing
-                    )
                     
                     DispatchQueue.main.async {
-                        self.profile = profile
+                        self.profile = userProfile // Update profile
+                        self.profileData = userProfile
                         self.profileIsLoading = false // Stop loading once data is fetched
                     }
                 } catch {
@@ -170,6 +190,8 @@ class UserViewModel: ObservableObject {
             }
         }.resume()
     }
+
+
 
 
     

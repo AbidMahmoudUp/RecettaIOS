@@ -158,7 +158,7 @@ struct GenerateRecipeViewUI: View {
                 DispatchQueue.main.async {
                     progress = Float(elapsed / maxLoadingTime)
                 }
-                try await Task.sleep(nanoseconds: 500_000_000)  // 0.5 seconds
+                try await Task.sleep(nanoseconds: 499_999_999)  // 0.5 seconds
             }
         } catch {
             // Handle API errors
@@ -175,7 +175,10 @@ struct GenerateRecipeViewUI: View {
         do {
             // Make the actual API call or perform background work to generate the recipe
             await recipeViewModel.generateRecipe(ingredients: listIngredientQte.ingredients)
-        } catch {
+            
+            
+            
+            } catch {
             // Handle error in generating the recipe
             print("Error in recipe generation: \(error)")
         }
@@ -197,11 +200,14 @@ struct GeneratedRecipeListViewUI: View {
                     .frame(height: 200)
             }
         } else {
+            
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(recipes, id: \.id) { recipe in
-                        RecipeCard(recipe: recipe)
-                    }
+                        NavigationLink(destination: RecipeViewUI(recipe: recipe)) {
+                            
+                            RecipeCard(recipe: recipe)
+                        }}
                 }
                 .padding()
             }
@@ -211,10 +217,9 @@ struct GeneratedRecipeListViewUI: View {
 
 struct RecipeCard: View {
     let recipe: Recipe
-    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/uploads"
     var body: some View {
         VStack {
-            AsyncImage(url: URL(string: baseURL + (recipe.image ?? ""))) { image in
+            AsyncImage(url: URL(string: Constants.baseURLPicture + (recipe.image ?? ""))) { image in
                 image
                     .resizable()
                     .scaledToFit()

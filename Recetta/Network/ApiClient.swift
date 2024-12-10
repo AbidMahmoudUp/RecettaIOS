@@ -4,7 +4,6 @@ class ApiClient {
     static let shared = ApiClient()
     private init() {}
 
-    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/api"
     private let defaultHeaders = ["Content-Type": "application/json"]
 
     func request<T: Decodable>(
@@ -14,7 +13,7 @@ class ApiClient {
         headers: [String: String] = [:]
     ) async throws -> T {
         // Construct the full URL
-        guard let url = URL(string: "\(baseURL)/\(endpoint)") else {
+        guard let url = URL(string: "\(Constants.baseURL)/\(endpoint)") else {
             throw ApiError.invalidURL
         }
 

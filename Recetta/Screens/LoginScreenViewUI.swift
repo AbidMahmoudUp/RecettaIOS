@@ -54,15 +54,15 @@ struct LoginScreenViewUI: View {
                         }
 
                         Button(action: {
-                            userViewModel.signin()
-                            if let error = userViewModel.errorMessage {
-                                showToastMessage(error: error)
-                            }
-                            if userViewModel.isLoggedIn {
-                                if isOn {
-                                    UserDefaults.standard.set(true, forKey: "remember")
+                            userViewModel.signin { success in
+                                if success {
+                                    if isOn {
+                                        UserDefaults.standard.set(true, forKey: "remember")
+                                    }
+                                    self.navigateToContentView = true
+                                } else if let error = userViewModel.errorMessage {
+                                    showToastMessage(error: error)
                                 }
-                                self.navigateToContentView = true
                             }
                         }) {
                             Text("Login")
@@ -73,7 +73,9 @@ struct LoginScreenViewUI: View {
                         .background(Color("Color1"))
                         .clipShape(Capsule())
 
+
                         // Face ID Button
+                       /*
                         Button(action: {
                             authenticate()
                         }) {
@@ -81,7 +83,7 @@ struct LoginScreenViewUI: View {
                                 .resizable()
                                 .frame(width: 40, height: 40)
                                 .padding(.top)
-                        }
+                        }*/
 
                         Text("Or Login Using Social Media").fontWeight(.bold)
                         SocialMediaComponent()
@@ -136,7 +138,7 @@ struct LoginScreenViewUI: View {
         }
     }
 
-    func authenticate() {
+    /*   func authenticate() {
         let context = LAContext()
         var error: NSError?
 
@@ -162,7 +164,7 @@ struct LoginScreenViewUI: View {
         } else {
             showToastMessage(error: "Biometric Authentication Not Available")
         }
-    }
+    }*/
 
     private func showToastMessage(error: String) {
         withAnimation {

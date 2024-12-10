@@ -10,7 +10,7 @@ struct AddIngredientViewUI: View {
     @State private var selectedCategory: String = "All"
     @State private var listIngredientQte: IngredientUpdateDto
 
-    private let categories = ["All", "Fruit", "Vegetables", "Meat", "Nuts"]
+    private let categories = ["All", "Fruit", "Vegetables", "Meat","Spices"]
     
     init(inventoryViewModel: InventoryViewModel, ingredientViewModel: IngredientViewModel, listIngredientQte: IngredientUpdateDto) {
         self.inventoryViewModel = inventoryViewModel
@@ -63,20 +63,24 @@ struct AddIngredientViewUI: View {
                     .padding(.leading)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 24) {
+                        Spacer()
                         ForEach(categories, id: \.self) { category in
                             CategoryTab(text: category, isSelected: selectedCategory == category) {
                                 selectedCategory = category
                             }
                         }
+                        Spacer()
+
                     }
                     .padding(.horizontal)
                 }
 
                 // Filtered Ingredients (Display all by default)
-                let filteredIngredients = ingredientViewModel.ingredients.filter {
-                    searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText)
-                }
+                let filteredIngredients = ingredientViewModel.ingredients.filter { ingredient in
+                            (searchText.isEmpty || ingredient.name.localizedCaseInsensitiveContains(searchText)) &&
+                            (selectedCategory == "All" || ingredient.categorie == selectedCategory)
+                        }
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                         ForEach(filteredIngredients, id: \.id) { ingredient in
@@ -132,7 +136,7 @@ struct FoodCard: View {
                 .padding(8) // Padding around the background
 
             VStack {
-                AsyncImage(url: URL(string: "https://fdd2-197-22-195-235.ngrok-free.app/uploads/\(ingredient.image)")) { image in
+                AsyncImage(url: URL(string: Constants.baseURLPicture + ingredient.image)) { image in
                     image.resizable()
                         .scaledToFill()
                         .frame(width: 80, height: 80)
@@ -242,15 +246,15 @@ struct CategoryTab: View {
     let text: String
     let isSelected: Bool
     let onClick: () -> Void
-
+    
     var body: some View {
         VStack {
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(isSelected ? Color.orange : Color.clear)
                     .frame(width: 45, height: 45)
-
-                Image(systemName: "leaf") // Placeholder for category icon
+                
+                Image(systemName: categoryIcon(for: text))
                     .resizable()
                     .frame(width: 32, height: 32)
                     .foregroundColor(isSelected ? .white : Color.orange)
@@ -263,25 +267,24 @@ struct CategoryTab: View {
             onClick()
         }
     }
-}
-struct CardView<Content: View>: View {
-    let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-
-    var body: some View {
-        ZStack {
-            Color.white
-            content
+    struct CardView<Content: View>: View {
+        let content: Content
+        
+        init(@ViewBuilder content: () -> Content) {
+            self.content = content()
         }
-        .cornerRadius(8)
-        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+        
+        var body: some View {
+            ZStack {
+                Color.white
+                content
+            }
+            .cornerRadius(8)
+            .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+        }
     }
+    
 }
-
-
 #Preview {
     let mockInventoryViewModel = InventoryViewModel() // Replace with actual mock setup if needed
     let mockIngredientViewModel = IngredientViewModel() // Replace with actual mock setup if needed
@@ -312,8 +315,16 @@ extension Color {
         self.init(red: r, green: g, blue: b)
     }
 }
-import SwiftUI
-
+private func categoryIcon(for category: String) -> String {
+       switch category {
+       case "All": return "globe"
+       case "Fruit": return "applelogo"
+       case "Vegetables": return "carrot.fill" // Requires iOS 16+
+       case "Meat": return "fork.knife"
+       case "Spices": return "leaf"
+       default: return "questionmark.circle"
+       }
+   }
 struct RoundedCorner: Shape {
     var radius: CGFloat
     var corners: UIRectCorner

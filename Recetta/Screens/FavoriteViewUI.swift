@@ -17,7 +17,6 @@ struct FavoriteViewUI: View {
         VStack {
             // Title and Back Button
             HStack {
-        
                 Spacer()
                 Text("Favorite List")
                     .font(.headline)
@@ -25,13 +24,22 @@ struct FavoriteViewUI: View {
             }
             .padding()
             
-            // Display Favorite Recipes in LazyVGrid
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))], spacing: 16) {
-                ForEach(favoriteRecipes.filter { $0.userId == userId }, id: \.self) { recipe in
-                    FavoriteCard(recipe: recipe, userId: userId, showDeleteConfirmation: $showDeleteConfirmation, recipeToDelete: $recipeToDelete)
+            if favoriteRecipes.filter({ $0.userId == userId }).isEmpty {
+                // Display the "No Favorites" section
+                NoFavoriteSection(
+                    image: "dish",
+                    title: "No Favorites Yet",
+                    description: "Your favorite recipes will appear here. Start adding some delicious recipes!"
+                )
+            } else {
+                // Display Favorite Recipes in LazyVGrid
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))], spacing: 16) {
+                    ForEach(favoriteRecipes.filter { $0.userId == userId }, id: \.self) { recipe in
+                        FavoriteCard(recipe: recipe, userId: userId, showDeleteConfirmation: $showDeleteConfirmation, recipeToDelete: $recipeToDelete)
+                    }
                 }
+                .padding()
             }
-            .padding()
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
@@ -65,6 +73,35 @@ struct FavoriteViewUI: View {
     }
 }
 
+struct NoFavoriteSection: View {
+    let image: String // Image name from assets
+    let title: String
+    let description: String
+
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: 175) // Equivalent spacing at the top
+            
+            Image(image) // Replace with your asset name
+                .resizable()
+                .frame(width: 89, height: 94)
+                .padding(.bottom, 12) // Space below the image
+            
+            Text(title)
+                .font(.system(size: 20, weight: .bold))
+                .padding(.bottom, 12) // Space below the title
+            
+            Text(description)
+                .font(.system(size: 14))
+                .foregroundColor(Color(red: 112 / 255, green: 108 / 255, blue: 108 / 255))
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+    }
+}
+
 struct FavoriteCard: View {
     var recipe: RecipeEntity
     var userId: String
@@ -72,21 +109,37 @@ struct FavoriteCard: View {
     @Binding var recipeToDelete: RecipeEntity?
     
     var body: some View {
-        ElevatedCard(recipe: recipe, userId: userId, showDeleteConfirmation: $showDeleteConfirmation, recipeToDelete: $recipeToDelete)
+        NavigationLink(destination: RecipeViewUI(recipe: convertToRecipe(recipe))) {
+            ElevatedCard(recipe: recipe, userId: userId, showDeleteConfirmation: $showDeleteConfirmation, recipeToDelete: $recipeToDelete)
+        }
+        
+        
     }
-}
+    private func convertToRecipe(_ recipeEntity: RecipeEntity) -> Recipe {
+        return Recipe(
+            id: recipeEntity.id ?? "",
+            title: recipeEntity.title ?? "",
+            description: recipeEntity.descriptionRecipe ?? "",
+            category: recipeEntity.category ?? "",
+            cookingTime: recipeEntity.cookingtime ?? "", // Add this if the field exists in RecipeEntity
+            energy: recipeEntity.energy ?? "", // Add this if the field exists in RecipeEntity
+            rating: recipeEntity.rating ?? "0.0",
+            image: recipeEntity.image ?? "",
+            ingredients: [] ,// Populate as needed based on your data model
+            instructions: [""] // Add instructions if required and available
+        )
+    }
 
+}
 struct ElevatedCard: View {
     var recipe: RecipeEntity
     var userId: String
-    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/uploads"
     @Binding var showDeleteConfirmation: Bool
     @Binding var recipeToDelete: RecipeEntity?
     
     var body: some View {
         VStack {
-            // Safely unwrap recipe.image
-            if let imageUrl = recipe.image, let url = URL(string: baseURL + imageUrl) {
+            if let imageUrl = recipe.image, let url = URL(string: Constants.baseURLPicture + imageUrl) {
                 AsyncImage(url: url) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
@@ -101,27 +154,23 @@ struct ElevatedCard: View {
                     .clipped()
             }
             
-            // Recipe title
             Text(recipe.title ?? "Unknown Recipe")
                 .fontWeight(.bold)
                 .padding(.top, 8)
                 .foregroundColor(.black)
             
-            // Recipe description (shortened)
             Text(recipe.descriptionRecipe ?? "No description available")
                 .font(.subheadline)
                 .lineLimit(2)
                 .padding(.horizontal, 8)
                 .foregroundColor(.gray)
             
-            // Recipe rating
             HStack {
                 Text(String(format: "Rating: %.1f", recipe.rating ?? 0.0))
                     .font(.caption)
                     .foregroundColor(.orange)
                 Spacer()
                 Button(action: {
-                    // Set the recipe to delete and show the confirmation alert
                     recipeToDelete = recipe
                     showDeleteConfirmation = true
                 }) {

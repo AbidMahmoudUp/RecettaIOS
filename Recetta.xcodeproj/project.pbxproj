@@ -15,6 +15,7 @@
 		5C4C8EAD2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4C8EAC2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift */; };
 		5C55D6102CF8E419006F7912 /* ToastViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */; };
 		5C55D6122CF8EDB6006F7912 /* GenerateRecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */; };
+		5C5AD0972D0379FE000B708E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5AD0962D0379FE000B708E /* Constants.swift */; };
 		5C7906A82CF672BE005CF356 /* AddIngredientViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */; };
 		5C7906AA2CF67DD3005CF356 /* IngredientServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */; };
 		5C7DFB4A2CD93D1200260978 /* SideBarItemComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */; };
@@ -80,6 +81,7 @@
 		5C4C8EAC2D00D42F0092BE04 /* RecipeGenerationLoadingViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGenerationLoadingViewUI.swift; sourceTree = "<group>"; };
 		5C55D60F2CF8E419006F7912 /* ToastViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewUI.swift; sourceTree = "<group>"; };
 		5C55D6112CF8EDB6006F7912 /* GenerateRecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateRecipeViewUI.swift; sourceTree = "<group>"; };
+		5C5AD0962D0379FE000B708E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIngredientViewUI.swift; sourceTree = "<group>"; };
 		5C7906A92CF67DD3005CF356 /* IngredientServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientServiceApi.swift; sourceTree = "<group>"; };
 		5C7DFB492CD93D1200260978 /* SideBarItemComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarItemComponent.swift; sourceTree = "<group>"; };
@@ -211,8 +213,8 @@
 				5CAAE8752CD8280300C19DD2 /* InventoryViewUI.swift */,
 				5CB7219A2CE3BA2C005F5471 /* SplachScreenViewUI.swift */,
 				5CB791D52CE53B8600A2C9CA /* LoginScreenViewUI.swift */,
-				5CB791D72CE53D7900A2C9CA /* RegisterViewUI.swift */,
 				5CBABFCA2CE6AC0F0029E79C /* ForgetPasswordViewUi.swift */,
+				5CB791D72CE53D7900A2C9CA /* RegisterViewUI.swift */,
 				5CBABFCC2CE6AC4B0029E79C /* ResetPasswordViewUi.swift */,
 				5C149EA12CEFC721007D312E /* RecipeViewUI.swift */,
 				5C7906A72CF672BE005CF356 /* AddIngredientViewUI.swift */,
@@ -264,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				5CDC080B2CE0C1AE00C83287 /* Enums */,
+				5C5AD0962D0379FE000B708E /* Constants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				5C88414D2CED13F600FAD431 /* AuthDataModel.swift in Sources */,
 				5CDC08152CE13BE500C83287 /* Recipe.swift in Sources */,
 				5CB721A02CE4AED3005F5471 /* PlatRepository.swift in Sources */,
+				5C5AD0972D0379FE000B708E /* Constants.swift in Sources */,
 				5CBABFCD2CE6AC4B0029E79C /* ResetPasswordViewUi.swift in Sources */,
 				5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */,
 				5C55D6102CF8E419006F7912 /* ToastViewUI.swift in Sources */,

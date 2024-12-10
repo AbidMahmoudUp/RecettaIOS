@@ -30,10 +30,10 @@ struct BottomNavigationBarComponent: View {
             Spacer()
             // Custom Tab Bar
             HStack {
-                BottomNavigationTabItemComponent(selectedTab: $selectedTab, index: 0, label: "Calls", icon: "phone.fill").frame(maxWidth: .infinity)
+                BottomNavigationTabItemComponent(selectedTab: $selectedTab, index: 0, label: "Home", icon: "house.fill").frame(maxWidth: .infinity)
                 BottomNavigationTabItemComponent(selectedTab: $selectedTab, index: 1, label: "Profile", icon: "person.fill").frame(maxWidth: .infinity)
                 BottomNavigationTabItemComponent(selectedTab: $selectedTab, index: 2, label: "Saved", icon: "star.fill").frame(maxWidth: .infinity)
-                BottomNavigationTabItemComponent(selectedTab: $selectedTab, index: 3, label: "Saved", icon: "archivebox").frame(maxWidth: .infinity)
+                BottomNavigationTabItemComponent(selectedTab: $selectedTab, index: 3, label: "Inventory", icon: "archivebox").frame(maxWidth: .infinity)
             }
             .padding()
             .background(Color(.systemGray6))

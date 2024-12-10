@@ -43,7 +43,7 @@ class UserViewModel: ObservableObject {
 
 
     
-    private let baseURL = "https://fdd2-197-22-195-235.ngrok-free.app/api"
+    private let baseURL = "https://ba46-197-22-195-235.ngrok-free.app/api"
     func areCredentialsValid() -> Bool {
            return !username.isEmpty && !email.isEmpty && !password.isEmpty
     }
@@ -392,8 +392,11 @@ class UserViewModel: ObservableObject {
     
     
     
-    func signin() {
-        guard let url = URL(string: "\(baseURL)/auth/login") else { return }
+    func signin(completion: @escaping (Bool) -> Void) {
+        guard let url = URL(string: "\(baseURL)/auth/login") else {
+            completion(false)
+            return
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -405,31 +408,29 @@ class UserViewModel: ObservableObject {
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         URLSession.shared.dataTask(with: request) { data, response, error in
-            
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
                 do {
                     let data = try JSONDecoder().decode(AuthDataModel.self, from: data!)
-//                    let data = try JSONSerialization.jsonObject(with:  data!)
                     DispatchQueue.main.async {
                         AuthManager.shared.saveTokens(accessToken: data.accessToken, refreshToken: data.refreshToken, userId: data.userId)
+                        self.isLoggedIn = true
+                        completion(true)
                     }
-                    print("\(data)")
-                } catch  {
-                    
-                }
-              
-                DispatchQueue.main.async {
-                    self.isLoggedIn = true
-                    
-                  //  self?.fetchProfile()
+                } catch {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "Error parsing response"
+                        completion(false)
+                    }
                 }
             } else {
                 DispatchQueue.main.async {
                     self.errorMessage = "Error signing in"
+                    completion(false)
                 }
             }
         }.resume()
     }
+
     // Méthode pour récupérer le profil
     func fetchProfile() {
         let userId = AuthManager.shared.getUserId()

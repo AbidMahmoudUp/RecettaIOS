@@ -18,7 +18,7 @@ struct RecipeListView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .center, spacing: 16) {
-                    ForEach(viewModel.recipesList) { plat in
+                    ForEach(viewModel.filteredRecipes) { plat in
                         RecipeCardUIViewComponent(plat: plat)
                             .frame(width: 200).padding(30)
                     }

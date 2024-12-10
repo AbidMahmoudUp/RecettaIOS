@@ -29,6 +29,12 @@ class RecipeServiceApi {
             return response
     }
     
+    func addRecipe(recipe : [Recipe]) async throws -> [Recipe]{
+        let response : [Recipe] = try await ApiClient.shared.request(endpoint: "plat", method: .POST , body: recipe)
+        return response
+        
+    }
+    
     
 
 }

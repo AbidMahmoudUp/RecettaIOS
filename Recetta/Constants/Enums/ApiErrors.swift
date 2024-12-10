@@ -26,5 +26,10 @@ enum ApiError: Error, LocalizedError {
         }
     }
 }
+enum RecipeError: Error {
+    case noRecipesFound
+    case backendError(String)  // Optional to handle more specific errors from the backend
+}
+
 
 

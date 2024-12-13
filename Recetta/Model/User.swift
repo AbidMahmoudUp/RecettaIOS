@@ -3,7 +3,8 @@ struct User: Codable {
     var name: String
     var email: String
     var phone: String?
-    var age: String? // age is handled as a String
+    var age: String?
+    
     
     enum CodingKeys: String, CodingKey {
         case name, email, phone, age

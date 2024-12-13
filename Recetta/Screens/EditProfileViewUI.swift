@@ -2,21 +2,17 @@ import SwiftUI
 
 struct EditProfileViewUI: View {
     @StateObject var userViewModel = UserViewModel()
-    @State private var emailTfShow = false
-    @State private var editState = false
     @State private var emailValue = ""
     @State private var ageValue = ""
     @State private var phoneNumberValue = ""
     @State private var navigateToProfileView = false
-    @State private var navigateToLoginView = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 8) {
+                VStack(spacing: 16) {
                     // Header Section
                     ZStack {
-                        // Background gradient
                         LinearGradient(
                             gradient: Gradient(colors: [Color.yellow, Color.orange]),
                             startPoint: .topTrailing,
@@ -28,10 +24,9 @@ struct EditProfileViewUI: View {
                         // Profile Image
                         VStack {
                             Image(ImageResource.profilePicExample)
-                                .renderingMode(.original)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 150, height: 150)
+                                .frame(width: 120, height: 120)
                                 .clipShape(Circle())
                                 .overlay(
                                     Circle()
@@ -41,13 +36,14 @@ struct EditProfileViewUI: View {
                                 .padding(.top, 50)
                         }
                     }
-                    
 
                     editableDetailsView()
                 }
             }
             .onAppear {
-                userViewModel.getUserData()
+                emailValue = userViewModel.profileData?.email ?? ""
+                ageValue = userViewModel.profileData?.age ?? ""
+                phoneNumberValue = userViewModel.profileData?.phone ?? ""
             }
             .navigationDestination(isPresented: $navigateToProfileView) {
                 ProfileViewUI().navigationBarBackButtonHidden()
@@ -56,95 +52,55 @@ struct EditProfileViewUI: View {
     }
 
     private func editableDetailsView() -> some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 20) {
             // Editable rows for user details
-           VStack
-            {
-                detailRow(icon: "envelope", title: "Email")
-                TextField(userViewModel.profileData?.email ?? "",text: $emailValue)
-                .font(.system(size: 18))
-                .foregroundColor(.black)
-            }
-            VStack{
-                detailRow(icon: "iphone.gen2", title: "Mobile number")
-                TextField( userViewModel.profileData?.phone ?? "Not Provided",text: $phoneNumberValue)
-                .font(.system(size: 18))
-                .foregroundColor(.black)
-               
-            }
-            VStack{
-                detailRow(icon: "person.badge.key", title: "Age")
-                TextField( userViewModel.profileData?.age ?? "Not Assigned",text: $ageValue)
-                .font(.system(size: 18))
-                .foregroundColor(.black)
-            }
+            detailInput(icon: "envelope.fill", title: "Email", text: $emailValue)
+            detailInput(icon: "iphone.fill", title: "Phone", text: $phoneNumberValue)
+            detailInput(icon: "person.fill", title: "Age", text: $ageValue)
 
             // Save Changes Button
             Button(action: {
+                var updatedProfile = userViewModel.profile
+                if !emailValue.isEmpty { updatedProfile?.email = emailValue }
+                if !phoneNumberValue.isEmpty { updatedProfile?.phone = phoneNumberValue }
+                if !ageValue.isEmpty { updatedProfile?.age = ageValue }
                 
-                
-                
-                let currentProfile = userViewModel.profile
-
-                var updatedProfile = currentProfile
-                
-                if !emailValue.isEmpty && !(emailValue == userViewModel.profileData?.email) {
-                    updatedProfile?.email = emailValue
-                }
-                
-                if !phoneNumberValue.isEmpty {
-                    updatedProfile?.phone = phoneNumberValue
-                }
-                
-                if !ageValue.isEmpty {
-                    updatedProfile?.age = ageValue
-                }
-
-                // Update profile via the ViewModel
-                userViewModel.updateUserProfile(updatedUser: updatedProfile )
+                userViewModel.updateUserProfile(updatedUser: updatedProfile)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.navigateToProfileView = true
+                    navigateToProfileView = true
                 }
-                
-            
-                
             }) {
                 Text("Save Changes")
-                    .frame(width: UIScreen.main.bounds.width - 200)
-                    .padding(.vertical, 15)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
                     .foregroundColor(.white)
+                    .font(.system(size: 18, weight: .bold))
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .padding(.top, 20)
-            
-            
-            
         }
-        .padding(35)
+        .padding(30)
         .background(Color.white)
-        .cornerRadius(20)
+        .cornerRadius(15)
         .shadow(radius: 7)
-        
-        
-
-        
     }
 
-    private func detailRow(icon: String, title: String) -> some View {
-        
-            HStack {
-                Image(systemName: icon).foregroundStyle(Color.cyan)
+    private func detailInput(icon: String, title: String, text: Binding<String>) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 10) {
+                Image(systemName: icon)
+                    .font(.system(size: 20))
+                    .foregroundColor(.blue)
                 Text(title)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.black)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.gray)
             }
-            
-        
+            TextField("Enter \(title)", text: text)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding(.horizontal, 8)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
-    
 }
-

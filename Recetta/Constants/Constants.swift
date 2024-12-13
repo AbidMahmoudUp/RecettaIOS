@@ -7,8 +7,8 @@
 
 import Foundation
 struct Constants{
-    static let baseURL = "https://ba46-197-22-195-235.ngrok-free.app/api"
-    static let baseURLPicture = "https://ba46-197-22-195-235.ngrok-free.app/uploads/"
+    static let baseURL = "https://df3d-197-21-164-96.ngrok-free.app/api"
+    static let baseURLPicture = "https://df3d-197-21-164-96.ngrok-free.app/uploads/"
     static let appTitle = "Recetta"
 
 }

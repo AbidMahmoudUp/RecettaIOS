@@ -7,78 +7,96 @@ struct ProfileViewUI: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 8) {
-                // Header Section
-                ZStack {
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.yellow, Color.orange]),
-                        startPoint: .topTrailing,
-                        endPoint: .bottomLeading
-                    )
-                    .frame(height: 200)
-                    .edgesIgnoringSafeArea(.top)
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Header Section
+                    ZStack {
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.yellow, Color.orange]),
+                            startPoint: .topTrailing,
+                            endPoint: .bottomLeading
+                        )
+                      
 
-                    // Profile Image
-                    VStack {
-                        Image(ImageResource.profilePicExample)
-                            .renderingMode(.original)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 150, height: 150)
-                            .clipShape(Circle())
-                            .overlay(
-                                Circle()
-                                    .stroke(Color.white, lineWidth: 4)
-                            )
-                            .shadow(radius: 10)
-                            .padding(.top, 50)
+                        .frame(height: 250)
+                        .edgesIgnoringSafeArea(.top)
+                        
+                        VStack(spacing: 8) {
+                            Image(ImageResource.profilePicExample)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 120, height: 120)
+                                .clipShape(Circle())
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white, lineWidth: 4)
+                                )
+                                .shadow(radius: 10)
+                                .padding(.top, 50)
+                            
+                            if let userProfile = userViewModel.profile {
+                                Text(userProfile.name)
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(.white)
+                            }
+                        }
                     }
-                }
-                
-                // User Name and Edit Button
-                if let userProfile = userViewModel.profile {
-                    userNameView(username: userProfile.name)
-                    Text("Edit")
-                       .font(.system(size: 20, weight: .bold))
-                       .foregroundColor(.cyan)
-                       .onTapGesture {
-                           navigateToEditProfileView.toggle()
-                       }
-                       .padding(5)
                     
-                    Text("Delete Account")
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundColor(.red)
-                        .onTapGesture {
-                            userViewModel.deleteUser()
-                            UserDefaults.standard.set(false, forKey: "remember")
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                self.navigateToLoginView = true
-                                
+                    // Profile Details Section
+                    if let userProfile = userViewModel.profile {
+                        VStack(spacing: 16) {
+                            // Edit Profile Button
+                            NavigationLink(destination: EditProfileViewUI(), isActive: $navigateToEditProfileView) {
+                                Text("Edit Profile")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.cyan)
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, weight: .bold))
+                                    .cornerRadius(10)
+                                    .shadow(radius: 5)
                             }
                             
-                        }.padding(5)
-
-                    userDetailsView(userProfile: userProfile)
-                } else if let errorMessage = userViewModel.profileErrorMessage {
-                    Text(errorMessage)
-                        .font(.system(size: 18))
-                        .foregroundColor(.red)
-                        .padding()
-                } else {
-                    // Loading state
-                    if userViewModel.profileIsLoading {
-                        ProgressView("Loading...")
-                            .progressViewStyle(CircularProgressViewStyle())
+                            // Delete Account
+                            Button(action: {
+                                userViewModel.deleteUser()
+                                UserDefaults.standard.set(false, forKey: "remember")
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    self.navigateToLoginView = true
+                                }
+                            }) {
+                                Text("Delete Account")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.red)
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 18, weight: .bold))
+                                    .cornerRadius(10)
+                                    .shadow(radius: 5)
+                            }
+                            
+                            // User Details
+                            userDetailsCard(userProfile: userProfile)
+                        }
+                        .padding(.horizontal, 16)
+                    } else if let errorMessage = userViewModel.profileErrorMessage {
+                        Text(errorMessage)
+                            .font(.system(size: 18))
+                            .foregroundColor(.red)
                             .padding()
+                    } else {
+                        if userViewModel.profileIsLoading {
+                            ProgressView("Loading...")
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .padding()
+                        }
                     }
                 }
             }
+            .navigationTitle("Profile")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $navigateToLoginView) {
                 LoginScreenViewUI().navigationBarBackButtonHidden()
-            }
-            .navigationDestination(isPresented: $navigateToEditProfileView) {
-                EditProfileViewUI().navigationBarBackButtonHidden()
             }
             .onAppear {
                 userViewModel.getUserData()
@@ -86,52 +104,45 @@ struct ProfileViewUI: View {
         }
     }
 
-    private func userNameView(username: String) -> some View {
-        HStack {
-            Text(username)
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundColor(.black)
-                .padding(5)
-        }
-    }
-
-    private func userDetailsView(userProfile: User) -> some View {
-        VStack(spacing: 30) {
-            detailRow(icon: "envelope", title: "Email", value: userProfile.email)
-            detailRow(icon: "iphone.gen2", title: "Mobile number", value: userProfile.phone ?? "Not Provided")
-            detailRow(icon: "person.badge.key", title: "Age", value: userProfile.age ?? "Not Assigned")
-
+    private func userDetailsCard(userProfile: User) -> some View {
+        VStack(spacing: 12) {
+            detailRow(icon: "envelope.fill", title: "Email", value: userProfile.email)
+            detailRow(icon: "phone.fill", title: "Phone                                 ", value: userProfile.phone ?? "Not Provided")
+            detailRow(icon: "person.crop.circle", title: "Age                                      ", value: userProfile.age ?? "Not Assigned")
+            
             Button(action: {
-                // Sign-out logic
                 UserDefaults.standard.set(false, forKey: "remember")
                 navigateToLoginView = true
             }) {
-                Text("Sign out")
-                    .frame(width: UIScreen.main.bounds.width - 200)
-                    .padding(.vertical, 15)
+                Text("Sign Out")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
                     .foregroundColor(.white)
+                    .font(.system(size: 18, weight: .bold))
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
             }
-            .background(Color("Color1"))
-            .clipShape(Capsule())
-            .padding(.top, 20)
         }
-        .padding(50)
+        .padding()
         .background(Color.white)
-        .cornerRadius(20)
-        .shadow(radius: 7)
+        .cornerRadius(15)
+        .shadow(radius: 5)
     }
 
     private func detailRow(icon: String, title: String, value: String) -> some View {
-        VStack {
-            HStack {
-                Image(systemName: icon).foregroundStyle(Color.cyan)
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.system(size: 20))
+                .foregroundColor(.blue)
+            VStack(alignment: .leading) {
                 Text(title)
-                    .font(.system(size: 24, weight: .semibold))
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.gray)
+                Text(value)
+                    .font(.system(size: 16))
                     .foregroundColor(.black)
             }
-            Text(value)
-                .font(.system(size: 18))
-                .foregroundColor(.black)
         }
     }
 }

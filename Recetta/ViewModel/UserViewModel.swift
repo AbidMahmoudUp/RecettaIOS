@@ -56,7 +56,7 @@ class UserViewModel: ObservableObject {
         var body: [String: Any] = ["userId": userId]
         
         
-        body["name"] = updatedUser?.name
+            body["name"] = updatedUser?.name
             body["email"] = updatedUser?.email
             body["phone"] = updatedUser?.phone
             body["age"] = updatedUser?.age

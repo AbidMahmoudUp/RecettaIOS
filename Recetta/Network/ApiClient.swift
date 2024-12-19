@@ -10,7 +10,9 @@ class ApiClient {
         endpoint: String,
         method: HttpMethod,
         body: Encodable? = nil,
-        headers: [String: String] = [:]
+        headers: [String: String] = [:],
+        contentType: String? = nil // Allow custom Content-Type
+
     ) async throws -> T {
         // Construct the full URL
         guard let url = URL(string: "\(Constants.baseURL)/\(endpoint)") else {
@@ -23,6 +25,11 @@ class ApiClient {
         request.allHTTPHeaderFields = defaultHeaders.merging(headers) { (_, new) in new }
 
         // Encode the body if provided
+        
+        if let contentType = contentType {
+               request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+           }
+        
         if let body = body {
             do {
                 request.httpBody = try JSONEncoder().encode(body)

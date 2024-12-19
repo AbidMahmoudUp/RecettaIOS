@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class InventoryRepository {
     private let service: InventoryServiceApi
@@ -33,4 +34,36 @@ class InventoryRepository {
     {
         try await service.startCooking(userId: userId, ingredients: ingredients)
     }
+    
+    func updateInventoryWithImage(id: String, img: MultipartFile) -> AnyPublisher<Void, Error> {
+          Future { promise in
+              Task {
+                  do {
+                      try await self.service.updateInventoryWithImage(userId: id, file: img)
+                      promise(.success(()))
+                  } catch {
+                      promise(.failure(error))
+                  }
+              }
+          }
+          .eraseToAnyPublisher()
+      }
+
+      func scanRecipe(img: MultipartFile) -> AnyPublisher<Recipe, Error> {
+          Future { promise in
+              Task {
+                  do {
+                      if let recipe = try await self.service.scanRecipe(file: img) {
+                          promise(.success(recipe))
+                      } else {
+                          promise(.failure(ApiError.decodingError))
+                      }
+                  } catch {
+                      promise(.failure(error))
+                  }
+              }
+          }
+          .eraseToAnyPublisher()
+      }
+
 }

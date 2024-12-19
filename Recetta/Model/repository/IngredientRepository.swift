@@ -21,4 +21,5 @@ class IngredientRepository {
     func getingredients() async throws -> [Ingredient]  {
         try await service.fetchIngredients()
     }
+    
 }

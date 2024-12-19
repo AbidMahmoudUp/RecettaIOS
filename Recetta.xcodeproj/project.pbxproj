@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5C149EA22CEFC721007D312E /* RecipeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA12CEFC721007D312E /* RecipeViewUI.swift */; };
 		5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */; };
+		5C3F681D2D1332A8005AC8B7 /* ScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3F681C2D1332A8005AC8B7 /* ScannerViewModel.swift */; };
 		5C44A6922D02523F0026F9A0 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C44A6912D02523F0026F9A0 /* PersistenceController.swift */; };
 		5C44A6952D02525C0026F9A0 /* Recetta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5C44A6932D02525C0026F9A0 /* Recetta.xcdatamodeld */; };
 		5C44A6982D0255C70026F9A0 /* RecipeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C44A6972D0255C70026F9A0 /* RecipeEntity.swift */; };
@@ -28,7 +29,6 @@
 		5CAAE85C2CD7EAAD00C19DD2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */; };
 		5CAAE85E2CD7EAAD00C19DD2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE85D2CD7EAAD00C19DD2 /* Item.swift */; };
 		5CAAE8602CD7EAAE00C19DD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CAAE85F2CD7EAAE00C19DD2 /* Assets.xcassets */; };
-		5CAAE8632CD7EAAE00C19DD2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CAAE8622CD7EAAE00C19DD2 /* Preview Assets.xcassets */; };
 		5CAAE86A2CD7EE2F00C19DD2 /* HomeViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE8692CD7EE2F00C19DD2 /* HomeViewUI.swift */; };
 		5CAAE86C2CD7F01500C19DD2 /* ProfileViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE86B2CD7F01500C19DD2 /* ProfileViewUI.swift */; };
 		5CAAE86E2CD7F04C00C19DD2 /* FavoriteViewUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CAAE86D2CD7F04C00C19DD2 /* FavoriteViewUI.swift */; };
@@ -75,6 +75,8 @@
 /* Begin PBXFileReference section */
 		5C149EA12CEFC721007D312E /* RecipeViewUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewUI.swift; sourceTree = "<group>"; };
 		5C149EA32CEFC7C4007D312E /* RecipeServiceApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeServiceApi.swift; sourceTree = "<group>"; };
+		5C3F681C2D1332A8005AC8B7 /* ScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerViewModel.swift; sourceTree = "<group>"; };
+		5C3F68212D133BDB005AC8B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C44A6912D02523F0026F9A0 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		5C44A6942D02525C0026F9A0 /* Recetta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Recetta.xcdatamodel; sourceTree = "<group>"; };
 		5C44A6972D0255C70026F9A0 /* RecipeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeEntity.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 				5CAAE8592CD7EAAD00C19DD2 /* RecettaApp.swift */,
 				5CAAE85B2CD7EAAD00C19DD2 /* ContentView.swift */,
 				5C44A6932D02525C0026F9A0 /* Recetta.xcdatamodeld */,
+				5C3F68212D133BDB005AC8B7 /* Info.plist */,
 				5CAAE85D2CD7EAAD00C19DD2 /* Item.swift */,
 				5CAAE85F2CD7EAAE00C19DD2 /* Assets.xcassets */,
 				5CAAE8612CD7EAAE00C19DD2 /* Preview Content */,
@@ -331,6 +334,7 @@
 				5CDC08202CE162FE00C83287 /* IngredientViewModel.swift */,
 				5CB721982CE3B4EF005F5471 /* InventoryViewModel.swift */,
 				5CB721AD2CE4B14E005F5471 /* UserViewModel.swift */,
+				5C3F681C2D1332A8005AC8B7 /* ScannerViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -414,7 +418,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CAAE8632CD7EAAE00C19DD2 /* Preview Assets.xcassets in Resources */,
 				5CAAE8602CD7EAAE00C19DD2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,6 +474,7 @@
 				5C5AD0972D0379FE000B708E /* Constants.swift in Sources */,
 				5CBABFCD2CE6AC4B0029E79C /* ResetPasswordViewUi.swift in Sources */,
 				5C149EA42CEFC7C4007D312E /* RecipeServiceApi.swift in Sources */,
+				5C3F681D2D1332A8005AC8B7 /* ScannerViewModel.swift in Sources */,
 				5C55D6102CF8E419006F7912 /* ToastViewUI.swift in Sources */,
 				5CDC08092CE0C18700C83287 /* ApiClient.swift in Sources */,
 				5CAAE8722CD8029300C19DD2 /* BottomNavigationTabItemComponent.swift in Sources */,
